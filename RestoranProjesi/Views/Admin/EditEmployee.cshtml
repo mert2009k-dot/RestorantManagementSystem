@@ -1,0 +1,53 @@
+@model RestoranProjesi.Models.Entities.Employee
+@{
+    ViewData["Title"] = "Çalışanı Düzenle";
+}
+
+<div class="row mt-4 justify-content-center">
+    <div class="col-md-6">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-warning"><i class="fa-solid fa-user-pen me-2"></i>Çalışanı Düzenle</h2>
+            <a asp-action="Employees" class="btn btn-outline-light rounded-pill"><i class="fa-solid fa-arrow-left me-2"></i>Geri Dön</a>
+        </div>
+
+        <div class="card bg-dark border-warning shadow">
+            <div class="card-body text-light p-4">
+                <form asp-action="EditEmployee" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="IsActive" />
+                    
+                    <div class="mb-3">
+                        <label class="form-label text-warning small fw-bold">Ad</label>
+                        <input type="text" asp-for="FirstName" class="form-control bg-dark text-white border-secondary" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-warning small fw-bold">Soyad</label>
+                        <input type="text" asp-for="LastName" class="form-control bg-dark text-white border-secondary" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-warning small fw-bold">Pozisyon / Görev</label>
+                        <select asp-for="Position" class="form-select bg-dark text-white border-secondary" required>
+                            <option value="Yönetici">Yönetici</option>
+                            <option value="Şef">Şef</option>
+                            <option value="Aşçı">Aşçı</option>
+                            <option value="Garson">Garson</option>
+                            <option value="Komi">Komi</option>
+                            <option value="Kasiyer">Kasiyer</option>
+                            <option value="Kurye">Kurye</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-warning small fw-bold">Telefon Numarası</label>
+                        <input type="text" asp-for="PhoneNumber" class="form-control bg-dark text-white border-secondary" />
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-warning small fw-bold">Fotoğraf URL</label>
+                        <input type="text" asp-for="ImageUrl" class="form-control bg-dark text-white border-secondary" />
+                    </div>
+                    
+                    <button type="submit" class="btn btn-warning w-100 fw-bold rounded-pill mt-2">Değişiklikleri Kaydet</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

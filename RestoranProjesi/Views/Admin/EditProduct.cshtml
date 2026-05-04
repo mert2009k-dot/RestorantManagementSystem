@@ -1,0 +1,83 @@
+@model RestoranProjesi.Models.Entities.Product
+@{
+    ViewData["Title"] = "Yemeği Düzenle";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card bg-dark text-light border-warning shadow-lg">
+            <div class="card-header border-warning pb-0">
+                <h3 class="text-warning"><i class="fa-solid fa-pen-to-square me-2"></i>Yemeği Düzenle</h3>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="EditProduct" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label text-warning">Yemek Adı</label>
+                        <input asp-for="Name" class="form-control bg-dark text-light border-warning" required />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-end mb-2">
+                            <label asp-for="CategoryId" class="form-label text-warning mb-0">Kategori</label>
+                        </div>
+                        <select asp-for="CategoryId" class="form-select bg-dark text-light border-warning" required>
+                            <option value="">-- Kategori Seçin --</option>
+                            @if(ViewBag.Categories != null)
+                            {
+                                foreach(var cat in ViewBag.Categories)
+                                {
+                                    <option value="@cat.Id">@cat.Name</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Price" class="form-label text-warning">Fiyat (₺)</label>
+                        <input asp-for="Price" type="number" step="0.01" class="form-control bg-dark text-light border-warning" required />
+                        <span asp-validation-for="Price" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label text-warning">Açıklama / İçerik</label>
+                        <textarea asp-for="Description" rows="3" class="form-control bg-dark text-light border-warning"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ImageUrl" class="form-label text-warning">Görsel URL'si (İsteğe Bağlı)</label>
+                        <input asp-for="ImageUrl" class="form-control bg-dark text-light border-warning" placeholder="https://..." />
+                        <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-check form-switch p-3 bg-dark-subtle rounded-3 border border-secondary border-opacity-25">
+                                <input asp-for="IsDailyMeal" class="form-check-input ms-0 me-2" type="checkbox">
+                                <label class="form-check-label text-light fw-semibold" asp-for="IsDailyMeal">Günlük Değişen Yemek</label>
+                                <div class="form-text text-muted small">Ev yemekleri için işaretleyin.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch p-3 bg-dark-subtle rounded-3 border border-secondary border-opacity-25">
+                                <input asp-for="IsActive" class="form-check-input ms-0 me-2" type="checkbox">
+                                <label class="form-check-label text-light fw-semibold" asp-for="IsActive">Şu An Satışta</label>
+                                <div class="form-text text-muted small">Menüde görünmesi için işaretleyin.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="ProductList" class="btn btn-outline-light rounded-pill">İptal</a>
+                        <button type="submit" class="btn btn-warning fw-bold text-dark rounded-pill px-4">Değişiklikleri Kaydet</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

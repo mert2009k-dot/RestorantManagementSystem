@@ -1,0 +1,115 @@
+@model IEnumerable<RestoranProjesi.Models.Entities.Category>
+@{
+    ViewData["Title"] = "Kategori Yönetimi";
+}
+
+<div class="row mt-4 justify-content-center">
+    <div class="col-md-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-warning"><i class="fa-solid fa-list me-2"></i>Kategori Yönetimi</h2>
+            <div>
+                <button type="button" class="btn btn-warning fw-bold rounded-pill px-4 me-2 shadow" data-bs-toggle="modal" data-bs-target="#quickAddModal">
+                    <i class="fa-solid fa-plus-circle me-2"></i>Hızlı Kategori Ekle
+                </button>
+                <a asp-action="ProductList" class="btn btn-outline-light rounded-pill px-4"><i class="fa-solid fa-arrow-left me-2"></i>Yemeklere Dön</a>
+            </div>
+        </div>
+
+        <!-- Hızlı Kategori Ekle Modal -->
+        <div class="modal fade" id="quickAddModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark border-warning border-opacity-50 text-white">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title text-warning"><i class="fa-solid fa-folder-plus me-2"></i>Yeni Kategori Ekle</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form asp-action="AddCategoryInline" method="post">
+                        <div class="modal-body py-4">
+                            <div class="mb-3">
+                                <label class="form-label text-light small fw-bold text-uppercase">Kategori Adı</label>
+                                <input type="text" name="name" class="form-control bg-dark text-white border-secondary" required placeholder="Örn: Kebaplar" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-light small fw-bold text-uppercase">Açıklama (İsteğe Bağlı)</label>
+                                <textarea name="description" class="form-control bg-dark text-white border-secondary" rows="2" placeholder="Kategori hakkında kısa bilgi..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-secondary">
+                            <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">İptal</button>
+                            <button type="submit" class="btn btn-warning fw-bold px-4 shadow">Ekle ve Kapat</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="card bg-dark border-warning shadow-lg rounded-4 overflow-hidden border-opacity-25">
+            <div class="card-body p-0">
+                <table class="table table-dark table-hover mb-0 align-middle">
+                    <thead class="text-warning bg-black bg-opacity-25">
+                        <tr>
+                            <th class="ps-4 py-3">Kategori Adı</th>
+                            <th class="py-3">Açıklama</th>
+                            <th class="text-end pe-4 py-3">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4">
+                                    <form asp-action="EditCategory" method="post" id="edit-form-@item.Id">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                    </form>
+                                    <input type="text" name="name" value="@item.Name" form="edit-form-@item.Id" class="form-control bg-dark text-white border-secondary border-opacity-50" required />
+                                </td>
+                                <td>
+                                    <input type="text" name="description" value="@item.Description" form="edit-form-@item.Id" class="form-control bg-dark text-white border-secondary border-opacity-50" />
+                                </td>
+                                <td class="text-end pe-4" style="white-space: nowrap;">
+                                    <button type="submit" form="edit-form-@item.Id" class="btn btn-sm btn-success rounded-pill px-3 me-1 fw-bold text-dark shadow-sm"><i class="fa-solid fa-check me-1"></i> Güncelle</button>
+                                    
+                                    <form id="delete-form-@item.Id" asp-action="DeleteCategory" asp-route-id="@item.Id" method="post" class="d-inline">
+                                        <button type="button" class="btn btn-sm btn-outline-danger rounded-pill" onclick="confirmDelete(@item.Id)">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        
+                        @if(!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center py-5 text-light opacity-50">Sistemde hiç kategori yok. Yukarıdaki "Hızlı Kategori Ekle" butonu ile ekleyebilirsiniz.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu kategoriyi silerseniz içindeki ürünler etkilenmez ancak kategorisiz kalır!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Evet, Sil!',
+                cancelButtonText: 'İptal',
+                background: '#212529',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+}

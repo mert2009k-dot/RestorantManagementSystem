@@ -1,0 +1,137 @@
+@model IEnumerable<RestoranProjesi.Models.Entities.Product>
+@{
+    ViewData["Title"] = "Menü Yönetimi";
+}
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-warning"><i class="fa-solid fa-utensils me-2"></i>Menü Yönetimi</h2>
+            <div class="d-flex align-items-center">
+                <!-- Kategori Filtresi -->
+                <div class="me-3">
+                    <select id="categoryFilter" class="form-select bg-dark text-warning border-warning rounded-pill px-4" style="min-width: 200px;">
+                        <option value="all">Tüm Kategoriler</option>
+                        @foreach(var cat in Model.Select(p => p.Category?.Name).Where(n => n != null).Distinct())
+                        {
+                            <option value="@cat">@cat</option>
+                        }
+                    </select>
+                </div>
+                <a asp-action="Index" class="btn btn-outline-warning fw-bold rounded-pill me-2"><i class="fa-solid fa-chart-line me-2"></i>Dashboard</a>
+                <a asp-action="AddProduct" class="btn btn-warning fw-bold rounded-pill"><i class="fa-solid fa-plus me-2"></i>Yeni Yemek Ekle</a>
+            </div>
+        </div>
+
+        <div class="card bg-dark border-warning shadow">
+            <div class="card-body p-0">
+                <table class="table table-dark table-hover mb-0">
+                    <thead class="text-warning">
+                        <tr>
+                            <th>Görsel</th>
+                            <th>Yemek Adı</th>
+                            <th>Kategori</th>
+                            <th>Durum</th>
+                            <th>Öne Çıkan</th>
+                            <th>Fiyat</th>
+                            <th class="text-end">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model)
+                        {
+                            <tr>
+                                <td class="align-middle">
+                                    <img src="@item.ImageUrl" style="width: 50px; height: 50px; object-fit: cover;" class="rounded" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=80&q=80'" />
+                                </td>
+                                <td class="align-middle">
+                                    <div class="fw-bold text-white">@item.Name</div>
+                                    @if(item.IsDailyMeal) { <span class="badge bg-info text-dark" style="font-size: 0.65rem;">GÜNLÜK EV YEMEĞİ</span> }
+                                </td>
+                                <td class="align-middle text-light">@item.Category?.Name</td>
+                                <td class="align-middle">
+                                    <form asp-action="ToggleProductStatus" asp-route-id="@item.Id" method="post">
+                                        @if(item.IsActive)
+                                        {
+                                            <button type="submit" class="btn btn-sm btn-success rounded-pill px-3 shadow-sm" style="font-size: 0.7rem;">AÇIK</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill px-3" style="font-size: 0.7rem;">KAPALI</button>
+                                        }
+                                    </form>
+                                </td>
+                                <td class="align-middle">
+                                    <form asp-action="ToggleFeaturedStatus" asp-route-id="@item.Id" method="post">
+                                        @if(item.IsFeatured)
+                                        {
+                                            <button type="submit" class="btn btn-sm btn-warning rounded-pill px-3 shadow-sm text-dark fw-bold" style="font-size: 0.7rem;"><i class="fa-solid fa-star me-1"></i>EVET</button>
+                                        }
+                                        else
+                                        {
+                                            <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill px-3" style="font-size: 0.7rem;">HAYIR</button>
+                                        }
+                                    </form>
+                                </td>
+                                <td class="align-middle text-success fw-bold">₺@item.Price</td>
+                                <td class="align-middle text-end">
+                                    <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info me-1"><i class="fa-solid fa-pen"></i></a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete(@item.Id)">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                    <form id="delete-form-@item.Id" asp-action="DeleteProduct" asp-route-id="@item.Id" method="post" class="d-none"></form>
+                                </td>
+                            </tr>
+                        }
+                        @if(!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">Henüz hiç yemek eklenmemiş.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Kategori Filtreleme Mantığı
+            $('#categoryFilter').on('change', function() {
+                const selectedCategory = $(this).val();
+                
+                $('table tbody tr').each(function() {
+                    const rowCategory = $(this).find('td:nth-child(3)').text().trim();
+                    
+                    if (selectedCategory === 'all' || rowCategory === selectedCategory) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu yemeği sildiğinizde geri alamazsınız!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Evet, sil!',
+                cancelButtonText: 'İptal',
+                background: '#1e1e1e',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+}

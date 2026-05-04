@@ -1,0 +1,139 @@
+@model RestoranProjesi.Models.Entities.Order
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Adisyon #@Model.Id</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            width: 80mm;
+            margin: 0 auto;
+            padding: 10px;
+            background-color: #fff;
+            color: #000;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .info {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .table-info {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #000;
+            margin-bottom: 10px;
+        }
+        .items {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .items th {
+            text-align: left;
+            border-bottom: 1px solid #000;
+            padding: 5px 0;
+        }
+        .items td {
+            padding: 5px 0;
+        }
+        .total {
+            border-top: 1px dashed #000;
+            margin-top: 10px;
+            padding-top: 10px;
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            border-top: 1px dashed #000;
+            padding-top: 10px;
+        }
+        @@media print {
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="no-print" style="margin-bottom: 20px; text-align: center;">
+        <button onclick="window.print()" style="padding: 10px 20px; font-weight: bold; background: #ffc107; border: none; cursor: pointer; border-radius: 5px;">YAZDIR</button>
+        <button onclick="window.close()" style="padding: 10px 20px; font-weight: bold; background: #eee; border: none; cursor: pointer; border-radius: 5px;">KAPAT</button>
+    </div>
+
+    <div class="header">
+        <div class="logo">HANEDAN</div>
+        <div class="info">
+            Akdeniz'in Eşsiz Lezzetleri<br>
+            Tarih: @Model.OrderDate.ToString("dd.MM.yyyy HH:mm")<br>
+            Sipariş No: #@Model.Id
+        </div>
+    </div>
+
+    @if (Model.TableNumber.HasValue)
+    {
+        <div class="table-info">MASA: @Model.TableNumber</div>
+    }
+    else
+    {
+        <div class="table-info">PAKET SERVİS / GEL AL</div>
+    }
+
+    <div class="info">
+        Müşteri: @(Model.User?.UserName ?? "Misafir")<br>
+        Ödeme: @Model.PaymentMethod
+    </div>
+
+    <table class="items">
+        <thead>
+            <tr>
+                <th>Ürün</th>
+                <th style="text-align: center;">Adet</th>
+                <th style="text-align: right;">Tutar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.Product?.Name</td>
+                    <td style="text-align: center;">@item.Quantity</td>
+                    <td style="text-align: right;">₺@((item.UnitPrice * item.Quantity).ToString("N2"))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="total">
+        TOPLAM: ₺@Model.TotalAmount.ToString("N2")
+    </div>
+
+    <div class="footer">
+        Afiyet Olsun!<br>
+        Bizi Tercih Ettiğiniz İçin Teşekkür Ederiz.<br>
+        www.hanedanrestoran.com
+    </div>
+
+    <script>
+        // Sayfa açıldığında otomatik yazdırma penceresini açar (isteğe bağlı)
+        // window.onload = function() { window.print(); }
+    </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+@model RestoranProjesi.Models.Entities.Category
+@{
+    ViewData["Title"] = "Yeni Kategori Ekle";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card bg-dark text-light border-warning shadow-lg">
+            <div class="card-header border-warning pb-0">
+                <h3 class="text-warning"><i class="fa-solid fa-plus-circle me-2"></i>Yeni Kategori Ekle</h3>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="AddCategory" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label text-warning">Kategori Adı</label>
+                        <input asp-for="Name" class="form-control bg-dark text-light border-warning" required />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label text-warning">Açıklama</label>
+                        <textarea asp-for="Description" rows="3" class="form-control bg-dark text-light border-warning"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Categories" class="btn btn-outline-light rounded-pill">İptal</a>
+                        <button type="submit" class="btn btn-warning fw-bold text-dark rounded-pill px-4">Kategoriyi Ekle</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

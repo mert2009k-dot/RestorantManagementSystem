@@ -1,0 +1,359 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var stats = ViewBag.Stats;
+    var topProducts = ViewBag.TopProducts;
+    var salesData = ViewBag.SalesData;
+    var salesLabels = ViewBag.SalesLabels;
+}
+
+<div class="container-fluid py-4" id="admin-dashboard-container">
+    <!-- Üst Başlık -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center bg-dark bg-opacity-50 p-4 rounded-4 border border-warning border-opacity-10 shadow-lg">
+                <div>
+                    <h1 class="text-warning fw-bold mb-1" style="font-family: 'Inter', sans-serif; letter-spacing: -1px;">
+                        <i class="fa-solid fa-gauge-high me-3"></i>Yönetim Paneli
+                    </h1>
+                    <p class="text-light opacity-50 mb-0">Restoranınızın genel durumunu ve performansını buradan takip edin.</p>
+                </div>
+                <div class="mt-3 mt-md-0 text-md-end">
+                    <div class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-1">
+                        <i class="fa-solid fa-calendar-day me-2"></i>@DateTime.Today.ToString("dd MMMM yyyy")
+                    </div>
+                    <div class="text-light small opacity-75">Hoş geldiniz, Admin</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- İstatistik Kartları -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-3 col-sm-6">
+            <div class="stats-card p-4 rounded-4 h-100 shadow-sm border border-warning border-opacity-10" style="background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="stats-icon bg-warning text-dark rounded-3 d-flex align-items-center justify-content-center shadow" style="width: 50px; height: 50px;">
+                        <i class="fas fa-shopping-basket fs-4"></i>
+                    </div>
+                    <span class="text-warning small fw-bold text-uppercase tracking-wider">Bugün</span>
+                </div>
+                <h6 class="text-light opacity-50 mb-1 fw-medium text-uppercase small">Sipariş Sayısı</h6>
+                <h2 class="text-white fw-bold mb-0">@stats.TodayOrders</h2>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6">
+            <div class="stats-card p-4 rounded-4 h-100 shadow-sm border border-success border-opacity-10" style="background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="stats-icon bg-success text-white rounded-3 d-flex align-items-center justify-content-center shadow" style="width: 50px; height: 50px;">
+                        <i class="fas fa-lira-sign fs-4"></i>
+                    </div>
+                    <span class="text-success small fw-bold text-uppercase tracking-wider">Bugün</span>
+                </div>
+                <h6 class="text-light opacity-50 mb-1 fw-medium text-uppercase small">Toplam Kazanç</h6>
+                <h2 class="text-white fw-bold mb-0">₺@stats.TodayEarnings.ToString("N2")</h2>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6">
+            <div class="stats-card p-4 rounded-4 h-100 shadow-sm border border-info border-opacity-10" style="background: linear-gradient(135deg, rgba(23, 162, 184, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="stats-icon bg-info text-white rounded-3 d-flex align-items-center justify-content-center shadow" style="width: 50px; height: 50px;">
+                        <i class="fas fa-utensils fs-4"></i>
+                    </div>
+                    <span class="text-info small fw-bold text-uppercase tracking-wider">Sistem</span>
+                </div>
+                <h6 class="text-light opacity-50 mb-1 fw-medium text-uppercase small">Aktif Ürünler</h6>
+                <h2 class="text-white fw-bold mb-0">@stats.TotalProducts</h2>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6">
+            <div class="stats-card p-4 rounded-4 h-100 shadow-sm border border-primary border-opacity-10" style="background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="stats-icon bg-primary text-white rounded-3 d-flex align-items-center justify-content-center shadow" style="width: 50px; height: 50px;">
+                        <i class="fas fa-tags fs-4"></i>
+                    </div>
+                    <span class="text-primary small fw-bold text-uppercase tracking-wider">Sistem</span>
+                </div>
+                <h6 class="text-light opacity-50 mb-1 fw-medium text-uppercase small">Kategoriler</h6>
+                <h2 class="text-white fw-bold mb-0">@stats.TotalCategories</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Üst Satır: Satış Performansı -->
+        <div class="col-12">
+            <div class="card bg-dark bg-opacity-50 border border-white border-opacity-10 rounded-4 overflow-hidden shadow-lg">
+                <div class="card-header bg-transparent border-white border-opacity-10 p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="text-white mb-0 fw-bold">
+                            <i class="fa-solid fa-chart-line text-warning me-2"></i>Satış Performansı
+                        </h5>
+                        <span class="text-light opacity-50 small">Son 7 Gün</span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="chart-container" style="height: 350px;">
+                        <canvas id="myAreaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alt Satır: 3'lü Kart Düzeni -->
+        <!-- Popüler Ürün Dağılımı -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card bg-dark bg-opacity-50 border border-white border-opacity-10 rounded-4 h-100 shadow-lg">
+                <div class="card-header bg-transparent border-white border-opacity-10 p-4 text-center">
+                    <h5 class="text-white mb-0 fw-bold">Popüler Ürün Dağılımı</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="chart-container mb-4" style="height: 220px;">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                    <div class="product-list mt-3">
+                        @if (topProducts != null)
+                        {
+                            int i = 0;
+                            foreach (var item in topProducts)
+                            {
+                                <div class="d-flex align-items-center justify-content-between mb-3 p-3 rounded-4 bg-dark bg-opacity-25 border border-white border-opacity-5 hover-glow" style="transition: all 0.3s ease;">
+                                    <div class="d-flex align-items-center">
+                                        <div class="rounded-circle me-3 shadow-sm" style="width: 12px; height: 12px; background-color: var(--product-color-@(i % 5))"></div>
+                                        <span class="text-light fw-semibold" style="font-family: 'Outfit', sans-serif; font-size: 0.95rem; letter-spacing: 0.2px;">@item.Name</span>
+                                    </div>
+                                    <div class="badge-pill px-3 py-1 rounded-pill" style="background: rgba(255, 193, 7, 0.1); border: 1px solid rgba(255, 193, 7, 0.2);">
+                                        <span class="text-warning fw-bold small" style="font-family: 'Outfit', sans-serif;">@item.Count Adet</span>
+                                    </div>
+                                </div>
+                                i++;
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analiz ve Kayıtlar -->
+        <div class="col-xl-4 col-md-6">
+            <div class="card bg-dark bg-opacity-50 border border-white border-opacity-10 rounded-4 h-100 shadow-lg">
+                <div class="card-header bg-transparent border-white border-opacity-10 p-4 text-center">
+                    <h5 class="text-white mb-0 fw-bold">Analiz ve Kayıtlar</h5>
+                </div>
+                <div class="card-body p-4 text-center d-flex flex-column justify-content-center">
+                    <div class="mb-4">
+                        <div class="bg-warning bg-opacity-10 p-4 rounded-circle d-inline-block mb-3">
+                            <i class="fa-solid fa-file-invoice-dollar text-warning fs-1"></i>
+                        </div>
+                        <h4 class="text-white fw-bold mb-2">Günlük Raporlar</h4>
+                        <p class="text-light opacity-50 small mb-4">Günlük kazanç, sipariş sayıları ve operasyonel verileri detaylıca inceleyin.</p>
+                    </div>
+                    <a asp-action="DailyLog" class="btn btn-warning w-100 py-3 rounded-4 fw-bold shadow">
+                        <i class="fa-solid fa-arrow-right-long me-2"></i>TÜM LOGLARI İNCELE
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hızlı Yönetim Menüsü -->
+        <div class="col-xl-4 col-md-12">
+            <div class="card bg-dark bg-opacity-50 border border-white border-opacity-10 rounded-4 h-100 shadow-lg">
+                <div class="card-header bg-transparent border-white border-opacity-10 p-4 text-center">
+                    <h5 class="text-white mb-0 fw-bold">Hızlı Yönetim Menüsü</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-grid gap-3">
+                        <a asp-action="Orders" class="btn btn-dark border-white border-opacity-10 p-3 text-start rounded-4 hover-lift">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box bg-info bg-opacity-10 text-info rounded-3 me-3 p-3">
+                                    <i class="fa-solid fa-receipt fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white fw-bold">Sipariş Yönetimi</div>
+                                    <div class="text-light opacity-50 small">Siparişleri izle ve yönet</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a asp-action="QRManagement" class="btn btn-dark border-white border-opacity-10 p-3 text-start rounded-4 hover-lift">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box bg-warning bg-opacity-10 text-warning rounded-3 me-3 p-3">
+                                    <i class="fa-solid fa-qrcode fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white fw-bold">Masa & QR Yönetimi</div>
+                                    <div class="text-light opacity-50 small">Masa durumları ve QR kodlar</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a asp-action="ProductList" class="btn btn-dark border-white border-opacity-10 p-3 text-start rounded-4 hover-lift">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box bg-success bg-opacity-10 text-success rounded-3 me-3 p-3">
+                                    <i class="fa-solid fa-utensils fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white fw-bold">Ürün Listesi</div>
+                                    <div class="text-light opacity-50 small">Menüyü düzenle ve güncelle</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a asp-action="Categories" class="btn btn-dark border-white border-opacity-10 p-3 text-start rounded-4 hover-lift">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box bg-primary bg-opacity-10 text-primary rounded-3 me-3 p-3">
+                                    <i class="fa-solid fa-layer-group fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white fw-bold">Kategori Yönetimi</div>
+                                    <div class="text-light opacity-50 small">Kategorileri yapılandır</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a asp-action="Reservations" class="btn btn-dark border-white border-opacity-10 p-3 text-start rounded-4 hover-lift">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box bg-danger bg-opacity-10 text-danger rounded-3 me-3 p-3">
+                                    <i class="fa-solid fa-calendar-check fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white fw-bold">Rezervasyonlar</div>
+                                    <div class="text-light opacity-50 small">Müşteri randevuları</div>
+                                </div>
+                            </div>
+                        </a>
+                        <a asp-action="Employees" class="btn btn-dark border-white border-opacity-10 p-3 text-start rounded-4 hover-lift">
+                            <div class="d-flex align-items-center">
+                                <div class="icon-box bg-secondary bg-opacity-10 text-light rounded-3 me-3 p-3">
+                                    <i class="fa-solid fa-user-gear fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="text-white fw-bold">Personel Yönetimi</div>
+                                    <div class="text-light opacity-50 small">Yetkiler ve çalışanlar</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --product-color-0: #ffc107;
+        --product-color-1: #17a2b8;
+        --product-color-2: #28a745;
+        --product-color-3: #dc3545;
+        --product-color-4: #6610f2;
+    }
+
+    #admin-dashboard-container {
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .hover-lift {
+        transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .hover-lift:hover {
+        transform: translateY(-5px);
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        border-color: rgba(255, 193, 7, 0.3) !important;
+    }
+
+    .hover-glow:hover {
+        background-color: rgba(255, 255, 255, 0.08) !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .stats-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.4) !important;
+    }
+
+    .tracking-wider {
+        letter-spacing: 1px;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Chart.js Area Chart
+        var ctx = document.getElementById("myAreaChart");
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(salesLabels)),
+                datasets: [{
+                    label: "Kazanç (₺)",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(255, 193, 7, 0.05)",
+                    borderColor: "rgba(255, 193, 7, 1)",
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgba(255, 193, 7, 1)",
+                    pointBorderColor: "rgba(255, 193, 7, 1)",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "rgba(255, 193, 7, 1)",
+                    pointHoverBorderColor: "rgba(255, 193, 7, 1)",
+                    pointHitRadius: 10,
+                    pointBorderWidth: 2,
+                    data: @Html.Raw(Json.Serialize(salesData)),
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        grid: {
+                            color: "rgba(255, 255, 255, 0.05)"
+                        },
+                        ticks: {
+                            color: "rgba(255, 255, 255, 0.5)"
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: "rgba(255, 255, 255, 0.05)"
+                        },
+                        ticks: {
+                            color: "rgba(255, 255, 255, 0.5)",
+                            callback: function(value) { return '₺' + value; }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // Pie Chart
+        var topProductsData = @Html.Raw(Json.Serialize(topProducts)) || [];
+        var ctxPie = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctxPie, {
+            type: 'doughnut',
+            data: {
+                labels: topProductsData.map(x => x.name),
+                datasets: [{
+                    data: topProductsData.map(x => x.count),
+                    backgroundColor: ['#ffc107', '#17a2b8', '#28a745', '#dc3545', '#6610f2'],
+                    hoverBackgroundColor: ['#e0a800', '#138496', '#218838', '#c82333', '#5208cc'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                cutout: '70%'
+            },
+        });
+    </script>
+}

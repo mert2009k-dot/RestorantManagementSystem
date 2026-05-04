@@ -1,0 +1,129 @@
+@model IEnumerable<RestoranProjesi.Models.Entities.CartItem>
+@{
+    ViewData["Title"] = "Sepetim";
+    decimal totalAmount = Model?.Sum(i => i.Quantity * (i.Product?.Price ?? 0)) ?? 0;
+}
+
+<div class="row mt-4">
+    <div class="col-md-8">
+        <div class="d-flex align-items-center mb-4">
+            <a href="/Menu" class="btn btn-outline-warning rounded-circle me-3 shadow-sm" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <h2 class="text-warning mb-0"><i class="fa-solid fa-cart-shopping me-2"></i>Sepetim</h2>
+        </div>
+        
+        @if (Model == null || !Model.Any())
+        {
+            <div class="alert alert-dark border-warning text-light text-center p-5 rounded-4">
+                <i class="fa-solid fa-basket-shopping fs-1 text-muted mb-3"></i>
+                <h4>Sepetiniz şu an boş.</h4>
+                <p class="text-muted">Lezzetli yemeklerimizi keşfetmek için menüye göz atın.</p>
+                <a asp-controller="Menu" asp-action="Index" class="btn btn-warning mt-2 rounded-pill fw-bold">Menüye Git</a>
+            </div>
+        }
+        else
+        {
+            <div class="card bg-dark border-warning shadow">
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush rounded-bottom">
+                        @foreach (var item in Model)
+                        {
+                            <li class="list-group-item bg-dark border-secondary text-light p-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 col-4">
+                                        <img src="@item.Product.ImageUrl" alt="@item.Product.Name" class="rounded img-fluid" style="object-fit: cover; aspect-ratio:1/1;">
+                                    </div>
+                                    <div class="col-md-4 col-8">
+                                        <h5 class="mb-1 text-warning">@item.Product.Name</h5>
+                                        <span class="text-light small">Birim Fiyat: ₺@item.Product.Price</span>
+                                    </div>
+                                    <div class="col-md-3 col-6 mt-3 mt-md-0">
+                                        <form asp-action="UpdateQuantity" method="post" class="d-flex align-items-center">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <input type="number" name="quantity" value="@item.Quantity" min="1" max="50" class="form-control form-control-sm bg-dark text-light border-warning text-center me-2" style="width: 70px;" onchange="this.form.submit()" />
+                                        </form>
+                                    </div>
+                                    <div class="col-md-3 col-6 mt-3 mt-md-0 text-end">
+                                        <h5 class="mb-2">₺@(item.Product.Price * item.Quantity)</h5>
+                                        <form asp-action="Remove" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill"><i class="fa-solid fa-trash me-1"></i>Kaldır</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="col-md-4 mt-4 mt-md-0">
+            <div class="card bg-warning text-dark border-0 shadow-lg sticky-top" style="top: 100px; border-radius: 20px;">
+                <div class="card-body p-4">
+                    <h4 class="fw-bold mb-4 border-bottom border-dark pb-2 text-dark">Sipariş Özeti</h4>
+                    
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-dark fw-medium">Ara Toplam:</span>
+                        <span class="text-dark fw-bold">₺@totalAmount</span>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mb-3 pb-3 border-bottom border-dark border-opacity-25">
+                        <span class="text-dark fw-medium">Teslimat Ücreti:</span>
+                        <span class="text-success fw-bold">Ücretsiz</span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-4 mt-3">
+                        <span class="text-dark fs-4 fw-bold">Genel Toplam:</span>
+                        <span class="text-dark fs-4 fw-bold">₺@totalAmount</span>
+                    </div>
+
+                    <div class="mb-4 p-3 bg-white bg-opacity-50 rounded-4">
+                        <label class="fw-bold mb-2 d-block text-dark">Ödeme Yöntemi Seçiniz:</label>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input border-dark" type="radio" name="paymentMethod" id="payNakit" value="Nakit">
+                            <label class="form-check-label fw-semibold text-dark" for="payNakit">
+                                <i class="fa-solid fa-money-bill-wave text-success me-2"></i> Nakit
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input border-dark" type="radio" name="paymentMethod" id="payKart" value="Kredi Kartı">
+                            <label class="form-check-label fw-semibold text-dark" for="payKart">
+                                <i class="fa-solid fa-credit-card text-primary me-2"></i> Kredi Kartı
+                            </label>
+                        </div>
+                    </div>
+
+                    <form asp-controller="Order" asp-action="Checkout" method="post" onsubmit="return validatePayment()">
+                        <input type="hidden" name="paymentMethod" id="hiddenPaymentMethod" value="" />
+                        <button type="submit" class="btn btn-dark w-100 fw-bold rounded-pill py-3 shadow">
+                            <i class="fa-solid fa-check-circle me-2"></i> SİPARİŞİ TAMAMLA
+                        </button>
+                    </form>
+
+                    <script>
+                        function validatePayment() {
+                            const selected = document.querySelector('input[name="paymentMethod"]:checked');
+                            if (!selected) {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Ödeme Yöntemi Seçmediniz!',
+                                    text: 'Lütfen Nakit veya Kredi Kartı seçeneklerinden birini seçiniz.',
+                                    confirmButtonColor: '#ffc107',
+                                    confirmButtonText: 'Tamam'
+                                });
+                                return false;
+                            }
+                            document.getElementById('hiddenPaymentMethod').value = selected.value;
+                            return true;
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    }
+</div>

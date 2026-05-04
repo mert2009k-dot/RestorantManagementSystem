@@ -1,0 +1,155 @@
+@model IEnumerable<RestoranProjesi.Models.Entities.Employee>
+@{
+    ViewData["Title"] = "Çalışan Yönetimi";
+}
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-warning"><i class="fa-solid fa-users-gear me-2"></i>Çalışan Yönetimi</h2>
+            <a asp-action="Index" class="btn btn-outline-light rounded-pill"><i class="fa-solid fa-arrow-left me-2"></i>Admin Paneline Dön</a>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card bg-dark border-warning shadow h-100">
+                    <div class="card-header bg-transparent border-warning text-warning fw-bold">
+                        <i class="fa-solid fa-user-plus me-2"></i>Yeni Çalışan Ekle
+                    </div>
+                    <div class="card-body text-light">
+                        <form asp-action="AddEmployee" method="post">
+                            <div class="mb-3">
+                                <label class="form-label text-warning small fw-bold">Ad</label>
+                                <input type="text" name="firstName" class="form-control bg-dark text-white border-secondary" required placeholder="Örn: Ahmet" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-warning small fw-bold">Soyad</label>
+                                <input type="text" name="lastName" class="form-control bg-dark text-white border-secondary" required placeholder="Örn: Yılmaz" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-warning small fw-bold">Pozisyon / Görev</label>
+                                <select name="position" class="form-select bg-dark text-white border-secondary" required>
+                                    <option value="" disabled selected>Pozisyon seçin</option>
+                                    <option value="Yönetici">Yönetici</option>
+                                    <option value="Şef">Şef</option>
+                                    <option value="Aşçı">Aşçı</option>
+                                    <option value="Garson">Garson</option>
+                                    <option value="Komi">Komi</option>
+                                    <option value="Kasiyer">Kasiyer</option>
+                                    <option value="Kurye">Kurye</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-warning small fw-bold">Telefon Numarası</label>
+                                <input type="text" name="phoneNumber" class="form-control bg-dark text-white border-secondary" placeholder="05XX XXX XX XX" />
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label text-warning small fw-bold">Fotoğraf URL</label>
+                                <input type="text" name="imageUrl" class="form-control bg-dark text-white border-secondary" placeholder="https://..." />
+                            </div>
+                            <button type="submit" class="btn btn-warning w-100 fw-bold rounded-pill">Çalışanı Kaydet</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card bg-dark border-warning shadow">
+                    <div class="card-body p-0">
+                        <table class="table table-dark table-hover mb-0 align-middle">
+                            <thead class="text-warning" style="border-bottom: 2px solid var(--primary-color);">
+                                <tr>
+                                    <th class="ps-4">Görsel</th>
+                                    <th>Ad Soyad</th>
+                                    <th>Pozisyon</th>
+                                    <th>Telefon</th>
+                                    <th>Durum</th>
+                                    <th class="text-end pe-4">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var employee in Model)
+                                {
+                                    <tr>
+                                        <td class="ps-4">
+                                            <img src="@employee.ImageUrl" style="width: 45px; height: 45px; object-fit: cover;" class="rounded-circle border border-warning" onerror="this.src='https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&w=100&q=80'" />
+                                        </td>
+                                        <td class="fw-bold">@employee.FirstName @employee.LastName</td>
+                                        <td>
+                                            @{
+                                                var posClass = employee.Position switch {
+                                                    "Yönetici" => "text-danger",
+                                                    "Şef" => "text-warning",
+                                                    "Aşçı" => "text-warning",
+                                                    "Garson" => "text-info",
+                                                    "Komi" => "text-info",
+                                                    "Kasiyer" => "text-success",
+                                                    _ => "text-light"
+                                                };
+                                            }
+                                            <span class="@posClass"><i class="fa-solid fa-id-badge me-2 opacity-50"></i>@employee.Position</span>
+                                        </td>
+                                        <td>@employee.PhoneNumber</td>
+                                        <td>
+                                            <form asp-action="ToggleEmployeeStatus" asp-route-id="@employee.Id" method="post" class="d-inline">
+                                                @if(employee.IsActive)
+                                                {
+                                                    <button type="submit" class="btn btn-sm btn-success rounded-pill px-3" style="font-size: 0.7rem;">Aktif</button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="submit" class="btn btn-sm btn-outline-secondary rounded-pill px-3" style="font-size: 0.7rem;">Pasif</button>
+                                                }
+                                            </form>
+                                        </td>
+                                        <td class="text-end pe-4">
+                                            <a asp-action="EditEmployee" asp-route-id="@employee.Id" class="btn btn-sm btn-outline-info rounded-circle me-1" title="Çalışanı Düzenle">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-sm btn-outline-danger rounded-circle" onclick="confirmDeleteEmployee(@employee.Id)" title="Çalışanı Sil">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                            <form id="delete-employee-form-@employee.Id" asp-action="DeleteEmployee" method="post" class="d-none">
+                                                <input type="hidden" name="id" value="@employee.Id" />
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                                @if (!Model.Any())
+                                {
+                                    <tr>
+                                        <td colspan="6" class="text-center py-5 text-muted">Sistemde kayıtlı çalışan bulunmuyor.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDeleteEmployee(id) {
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu çalışanı sildiğinizde geri alamazsınız!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Evet, sil!',
+                cancelButtonText: 'İptal',
+                background: '#1e1e1e',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-employee-form-' + id).submit();
+                }
+            })
+        }
+    </script>
+}

@@ -1,0 +1,66 @@
+@model IEnumerable<RestoranProjesi.Models.Entities.Favorite>
+@{
+    ViewData["Title"] = "Favori Yemeklerim";
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-warning"><i class="fa-solid fa-heart me-2"></i>Favorilerim</h2>
+        <a asp-controller="Menu" asp-action="Index" class="btn btn-outline-warning rounded-pill px-4">Menüye Dön</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="fa-solid fa-heart-crack fa-4x text-muted mb-3 opacity-25"></i>
+            <h4 class="text-light">Henüz favori yemeğiniz bulunmuyor.</h4>
+            <p class="text-muted">Menümüzden beğendiğiniz yemekleri buraya ekleyebilirsiniz.</p>
+            <a asp-controller="Menu" asp-action="Index" class="btn btn-warning mt-3 rounded-pill px-5">Yemekleri Keşfet</a>
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var fav in Model)
+            {
+                <div class="col" id="fav-card-@fav.ProductId">
+                    <div class="card bg-dark text-light h-100 border-warning border-opacity-25 shadow-sm hover-scale transition">
+                        <img src="@fav.Product?.ImageUrl" class="card-img-top" alt="@fav.Product?.Name" style="height: 200px; object-fit: cover;" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=400&q=80'">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="card-title text-warning mb-0">@fav.Product?.Name</h5>
+                                <span class="badge bg-warning text-dark">₺@fav.Product?.Price</span>
+                            </div>
+                            <p class="card-text text-muted small">@fav.Product?.Category?.Name</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-warning border-opacity-10 d-flex justify-content-between align-items-center">
+                            <button onclick="toggleFavorite(@fav.ProductId)" class="btn btn-link text-danger p-0">
+                                <i class="fa-solid fa-heart fs-4"></i>
+                            </button>
+                            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                                <input type="hidden" name="productId" value="@fav.ProductId" />
+                                <button type="submit" class="btn btn-sm btn-warning rounded-pill px-3">Sepete Ekle</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function toggleFavorite(productId) {
+            $.post('/Menu/ToggleFavorite', { productId: productId }, function() {
+                // Favorilerim sayfasında olduğumuz için direkt kartı gizleyebiliriz
+                $(`#fav-card-${productId}`).fadeOut(300, function() {
+                    $(this).remove();
+                    if ($('.col').length === 0) {
+                        location.reload(); // Eğer son favori silindiyse "Henüz favoriniz yok" mesajı için
+                    }
+                });
+            });
+        }
+    </script>
+}

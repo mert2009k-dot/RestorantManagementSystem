@@ -1,0 +1,63 @@
+@model RestoranProjesi.Models.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Giriş Yap";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card bg-dark text-light border-warning shadow-lg">
+            <div class="card-header border-warning text-center pb-0">
+                <h3 class="text-warning"><i class="fa-solid fa-user-circle me-2"></i>Giriş Yap</h3>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label text-warning">E-posta</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-warning text-warning"><i class="fa-solid fa-envelope"></i></span>
+                            <input asp-for="Email" class="form-control bg-dark text-light border-warning" placeholder="ornek@mail.com" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="Password" class="form-label text-warning">Şifre</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-dark border-warning text-warning"><i class="fa-solid fa-lock"></i></span>
+                            <input asp-for="Password" id="loginPassword" class="form-control bg-dark text-light border-warning" placeholder="******" />
+                            <button class="btn btn-outline-warning" type="button" onclick="togglePassword('loginPassword', 'eyeIconLogin')">
+                                <i class="fa-solid fa-eye" id="eyeIconLogin"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-warning fw-bold text-dark rounded-pill">Giriş Yap</button>
+                    </div>
+                    <div class="text-center">
+                        <p class="mb-0 text-muted">Hesabınız yok mu? <a asp-action="Register" class="text-warning fw-bold text-decoration-none">Kayıt Ol</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        function togglePassword(inputId, iconId) {
+            var input = document.getElementById(inputId);
+            var icon = document.getElementById(iconId);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+    </script>
+}

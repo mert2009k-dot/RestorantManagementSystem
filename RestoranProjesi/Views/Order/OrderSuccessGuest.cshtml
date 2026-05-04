@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Sipariş Başarılı";
+}
+
+<div class="container py-5 text-center">
+    <div class="card bg-dark border-warning shadow-lg p-5 mx-auto" style="max-width: 600px; border-radius: 20px;">
+        <div class="mb-4">
+            <i class="fa-solid fa-circle-check text-success" style="font-size: 5rem;"></i>
+        </div>
+        <h2 class="text-warning mb-3">Afiyet Olsun!</h2>
+        <p class="text-light mb-4">
+            Siparişiniz başarıyla alındı ve mutfağımıza iletildi. 
+            @if(ViewBag.TableNo != null)
+            {
+                <span class="d-block mt-2 fw-bold text-info">Masa No: @ViewBag.TableNo</span>
+            }
+        </p>
+        <div class="alert alert-warning bg-transparent border-warning text-warning mb-4">
+            <h4 class="alert-heading"><i class="fa-solid fa-wallet me-2"></i>Ödeme Tutarı</h4>
+            <p class="fs-3 fw-bold mb-0">₺@ViewBag.OrderTotal</p>
+            <hr>
+            <p class="mb-0 small">Garsonumuz ödeme için masanıza uğrayacaktır.</p>
+        </div>
+        <a href="/Menu" class="btn btn-warning rounded-pill px-5 fw-bold">Yeni Sipariş Ver</a>
+    </div>
+</div>

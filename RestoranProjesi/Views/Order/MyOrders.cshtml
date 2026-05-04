@@ -1,0 +1,82 @@
+@model IEnumerable<RestoranProjesi.Models.Entities.Order>
+@{
+    ViewData["Title"] = "Siparişlerim";
+}
+
+<div class="row mt-4">
+    <div class="col-md-10 offset-md-1">
+        <h2 class="text-warning mb-4"><i class="fa-solid fa-clock-rotate-left me-2"></i>Sipariş Geçmişim</h2>
+        
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fa-solid fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (!Model.Any())
+        {
+            <div class="alert alert-dark border-warning text-light text-center p-5 rounded-4 shadow-lg">
+                <i class="fa-solid fa-receipt fs-1 text-muted mb-3"></i>
+                <h4>Henüz hiç sipariş vermemişsiniz.</h4>
+                <p class="text-muted">Hemen menümüze göz atıp lezzetli yemeklerimizden sipariş edebilirsiniz.</p>
+                <a asp-controller="Menu" asp-action="Index" class="btn btn-warning mt-3 rounded-pill fw-bold px-4">Menüye Git</a>
+            </div>
+        }
+        else
+        {
+            <div class="accordion accordion-flush" id="ordersAccordion">
+                @foreach (var order in Model)
+                {
+                    <div class="accordion-item bg-dark border border-secondary mb-3 rounded-3 overflow-hidden shadow-sm">
+                        <h2 class="accordion-header" id="heading-@order.Id">
+                            <button class="accordion-button collapsed bg-dark text-light border-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@order.Id" aria-expanded="false" aria-controls="collapse-@order.Id">
+                                <div class="d-flex w-100 justify-content-between align-items-center me-3">
+                                    <div>
+                                        <strong class="text-warning">Sipariş #@order.Id</strong>
+                                        <span class="ms-3 text-muted small"><i class="fa-regular fa-calendar me-1"></i>@order.OrderDate.ToString("dd.MM.yyyy HH:mm")</span>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        @{
+                                            var badgeColor = order.Status switch {
+                                                "Bekliyor" => "bg-secondary",
+                                                "Hazırlanıyor" => "bg-primary",
+                                                "Yolda" => "bg-info text-dark",
+                                                "Tamamlandı" => "bg-success",
+                                                "İptal Edildi" => "bg-danger",
+                                                _ => "bg-secondary"
+                                            };
+                                        }
+                                        <span class="badge @badgeColor me-3 rounded-pill px-3 py-2">@order.Status</span>
+                                        <strong class="fs-5">₺@order.TotalAmount</strong>
+                                    </div>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapse-@order.Id" class="accordion-collapse collapse" aria-labelledby="heading-@order.Id" data-bs-parent="#ordersAccordion">
+                            <div class="accordion-body border-top border-secondary bg-black bg-opacity-25">
+                                <ul class="list-group list-group-flush">
+                                    @foreach(var item in order.OrderItems)
+                                    {
+                                        <li class="list-group-item bg-transparent text-light px-0 d-flex justify-content-between align-items-center border-secondary border-opacity-25">
+                                            <div>
+                                                <span class="text-warning fw-bold me-2">@item.Quantity x</span>
+                                                @item.Product?.Name
+                                            </div>
+                                            <span>₺@(item.UnitPrice * item.Quantity)</span>
+                                        </li>
+                                    }
+                                </ul>
+                                <div class="mt-3 pt-3 border-top border-secondary border-opacity-25 d-flex justify-content-between text-muted small">
+                                    <span>Teslimat: @order.DeliveryType</span>
+                                    <span>Ödeme: @order.PaymentMethod</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

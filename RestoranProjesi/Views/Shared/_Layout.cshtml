@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Hanedan</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark mb-3 fixed-top py-3">
+            <div class="container-fluid px-4 px-lg-5">
+                <!-- Branding moved to center menu -->
+
+                
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="navbar-collapse collapse d-lg-flex justify-content-between align-items-center">
+                    <!-- Orta: Linkler -->
+                    <ul class="navbar-nav mx-auto justify-content-center fw-semibold fs-5 gap-3 align-items-center">
+                        <li class="nav-item me-4">
+                            @{
+                                var tableNum = Context.Session.GetInt32("TableNumber");
+                                var homeUrl = tableNum.HasValue ? "/Menu" : "/";
+                            }
+                            <a class="nav-link p-0 d-flex align-items-center" href="@(tableNum.HasValue ? "javascript:void(0)" : homeUrl)" style="@(tableNum.HasValue ? "cursor: default; pointer-events: none;" : "")">
+                                <i class="fa-solid fa-utensils text-warning fs-3 me-2"></i>
+                                <span class="fw-bold fs-3 text-warning" style="letter-spacing: 2px; font-family: 'Playfair Display', serif;">HANEDAN</span>
+                            </a>
+                        </li>
+                        @if (!tableNum.HasValue)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link px-3" asp-area="" asp-controller="Menu" asp-action="Index">Menü</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-3" asp-area="" asp-controller="Home" asp-action="About">Hakkımızda</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link px-3" asp-area="" asp-controller="Reservation" asp-action="Create">Rezervasyon</a>
+                            </li>
+                        }
+                    </ul>
+                    
+                    <!-- Sağ: Butonlar ve İkonlar -->
+                    <ul class="navbar-nav align-items-center gap-2 mt-3 mt-lg-0">
+                        <li class="nav-item me-2 d-flex align-items-center gap-2">
+                            @if (tableNum.HasValue)
+                            {
+                                <form asp-controller="Menu" asp-action="ExitTable" method="post" class="m-0">
+                                    <button type="submit" class="btn btn-outline-danger rounded-pill px-4 fw-bold shadow-sm">
+                                        <i class="fa-solid fa-right-from-bracket me-2"></i>ÇIKIŞ
+                                    </button>
+                                </form>
+                                <a class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow-sm" asp-area="" asp-controller="Cart" asp-action="Index">
+                                    <i class="fa-solid fa-cart-shopping me-2"></i>ÖDEMEYE GEÇİN
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="nav-link position-relative d-flex align-items-center justify-content-center rounded-circle bg-dark border border-secondary" style="width: 45px; height: 45px; transition: 0.3s;" asp-area="" asp-controller="Cart" asp-action="Index">
+                                    <i class="fa-solid fa-cart-shopping fs-5 text-light"></i>
+                                </a>
+                            }
+                        </li>
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-warning rounded-pill px-4 fw-bold" asp-area="" asp-controller="Admin" asp-action="Index">Admin Paneli</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="btn btn-outline-info rounded-pill px-4 fw-bold" asp-area="" asp-controller="Order" asp-action="MyOrders">
+                                    <i class="fa-solid fa-clock-rotate-left me-2"></i>Siparişlerim
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-danger rounded-pill px-4 fw-bold" asp-area="" asp-controller="Menu" asp-action="MyFavorites">
+                                    <i class="fa-solid fa-heart me-2"></i>Favorilerim
+                                </a>
+                            </li>
+                            <li class="nav-item d-none d-xl-flex align-items-center ms-2 text-light fw-medium border-start border-secondary ps-3">
+                                <i class="fa-regular fa-circle-user text-warning fs-4 me-2"></i> @User.Identity.Name
+                            </li>
+                            <li class="nav-item ms-2">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">Çıkış</button>
+                                </form>
+                            </li>
+                        }
+                        else if (!tableNum.HasValue)
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-outline-light rounded-pill px-4 fw-bold" asp-area="" asp-controller="Account" asp-action="Login">Giriş Yap</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow" asp-area="" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    @{
+        var containerClass = (ViewData["Title"]?.ToString() == "Ana Sayfa" || ViewData["Title"]?.ToString() == "Menü") ? "container-fluid px-0" : "container";
+    }
+    <div class="@containerClass" style="margin-top: 80px;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @if (!Context.Session.GetInt32("TableNumber").HasValue)
+    {
+        <footer class="footer text-muted py-4 mt-5">
+            <div class="container text-center">
+                &copy; 2026 - Hanedan - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-warning text-decoration-none">Gizlilik</a>
+                <div class="mt-2">
+                    <a href="#" class="text-light me-3 fs-5"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="text-light me-3 fs-5"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="text-light fs-5"><i class="fa-brands fa-facebook"></i></a>
+                </div>
+            </div>
+        </footer>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    
+    @if (TempData["CartMessage"] != null)
+    {
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: '@TempData["CartMessage"]',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                background: '#28a745', // Green background
+                color: '#000000', // Black text
+                iconColor: '#000000'
+            });
+        </script>
+    }
+</body>
+</html>

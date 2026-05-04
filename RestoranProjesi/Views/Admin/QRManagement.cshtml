@@ -1,0 +1,109 @@
+@{
+    ViewData["Title"] = "QR Masa Yönetimi";
+    var baseUrl = Context.Request.Scheme + "://" + Context.Request.Host + "/Menu?table=";
+}
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-warning fw-bold"><i class="fa-solid fa-qrcode me-2"></i>QR Masa Yönetimi</h2>
+            <div>
+                <button onclick="location.reload()" class="btn btn-warning rounded-pill px-4 me-2 shadow"><i class="fa-solid fa-sync me-1"></i> Sayfayı Yenile</button>
+                <a asp-action="Index" class="btn btn-outline-light rounded-pill px-4"><i class="fa-solid fa-arrow-left me-2"></i> Dashboard</a>
+            </div>
+        </div>
+
+        <div class="alert alert-warning bg-dark border-warning text-warning mb-4 shadow-sm" style="border-style: dashed; border-width: 2px;">
+            <i class="fa-solid fa-circle-check me-2"></i>
+            <strong>Sistem Güncellendi:</strong> QR kodlar artık harici bir servis üzerinden anlık ve garanti olarak yükleniyor. 
+            Eğer kodlar görünmüyorsa internet bağlantınızı kontrol ediniz.
+        </div>
+
+        <div class="row g-4">
+            @for (int i = 1; i <= 10; i++)
+            {
+                var fullUrl = baseUrl + i;
+                var qrApiUrl = $"https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={Uri.EscapeDataString(fullUrl)}";
+                
+                <div class="col-md-4 col-lg-3 col-sm-6">
+                    <div class="card bg-white shadow-lg border-0 h-100 text-center p-3 qr-card" style="border-radius: 20px;">
+                        <h3 class="text-dark fw-bold mb-3 border-bottom pb-2">MASA @i</h3>
+                        
+                        <div class="qr-wrapper mx-auto mb-3" style="width: 170px; height: 170px; display: flex; align-items: center; justify-content: center; background: #fff; border: 1px solid #eee; border-radius: 15px; overflow: hidden;">
+                            <img src="@qrApiUrl" alt="Masa @i QR" class="img-fluid" id="qr-img-@i" style="width: 150px; height: 150px;" />
+                        </div>
+
+                        <div class="small text-muted mb-3 px-2 break-all" style="font-family: monospace; background: #f1f1f1; padding: 5px; border-radius: 5px; color: #333 !important;">
+                            @fullUrl
+                        </div>
+                        
+                        <button onclick="printQR(@i, '@qrApiUrl')" class="btn btn-dark w-100 rounded-pill py-2 mt-auto shadow">
+                            <i class="fa-solid fa-print me-2"></i>KODU YAZDIR
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function printQR(tableNo, qrUrl) {
+            const printWindow = window.open('', '_blank');
+            if (!printWindow) {
+                alert("Lütfen açılır pencerelere (Pop-up) izin veriniz.");
+                return;
+            }
+
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                    <head>
+                        <title>Masa ${tableNo} QR Kodu - HANEDAN</title>
+                        <style>
+                            body { 
+                                text-align: center; 
+                                font-family: 'Segoe UI', Arial, sans-serif; 
+                                padding: 50px; 
+                                color: #000; 
+                                background-color: #fff;
+                            }
+                            .qr-container { 
+                                border: 8px solid #000; 
+                                padding: 60px; 
+                                display: inline-block; 
+                                border-radius: 50px;
+                                background-color: #fff;
+                            }
+                            h1 { margin: 0; font-size: 70px; font-weight: 900; color: #000; }
+                            h2 { margin: 10px 0 40px 0; font-size: 45px; color: #444; border-bottom: 3px solid #000; padding-bottom: 20px; }
+                            .qr-image { width: 350px; height: 350px; }
+                            .footer-text { font-size: 28px; color: #000; margin-top: 40px; font-weight: 800; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="qr-container">
+                            <h1>HANEDAN</h1>
+                            <h2>MASA ${tableNo}</h2>
+                            <img src="${qrUrl}" class="qr-image" />
+                            <p class="footer-text">SİPARİŞ İÇİN OKUTUNUZ</p>
+                        </div>
+                        <script>
+                            window.onload = function() { 
+                                window.print(); 
+                                setTimeout(function() { window.close(); }, 700); 
+                            };
+                        <\/script>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+    </script>
+    <style>
+        .break-all { word-break: break-all; }
+        .qr-card { transition: all 0.3s ease; }
+        .qr-card:hover { transform: translateY(-8px); box-shadow: 0 12px 24px rgba(0,0,0,0.2) !important; }
+    </style>
+}

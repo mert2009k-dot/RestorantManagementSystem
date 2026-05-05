@@ -76,8 +76,14 @@ var app = builder.Build();
 // Seed Roles and Admin
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    
+    // Veritabanını otomatik oluştur/güncelle
+    await context.Database.MigrateAsync();
+
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
 
     string[] roleNames = { "Admin", "User" };
     foreach (var roleName in roleNames)
@@ -88,7 +94,6 @@ using (var scope = app.Services.CreateScope())
         }
     }
 
-   
     var adminEmail = "admin@restoran.com";
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
     if (adminUser == null)

@@ -139,6 +139,7 @@ app.Use(async (context, next) =>
     await next();
 });
 
+app.UseStaticFiles(); // Bu satır eklendi (CSS, JS, Resimlerin yüklenmesi için kritik)
 app.UseRouting();
 
 // Enable session

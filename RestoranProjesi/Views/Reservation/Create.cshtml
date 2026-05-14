@@ -5,49 +5,100 @@
 
 <div class="row justify-content-center mt-5">
     <div class="col-md-8">
-        <div class="card bg-dark text-light border-warning shadow-lg">
-            <div class="card-header border-warning text-center pb-0">
-                <h3 class="text-warning"><i class="fa-solid fa-calendar-check me-2"></i>Masa Rezervasyonu</h3>
-                <p class="text-muted">Lütfen yerinizi ayırtmak için aşağıdaki formu doldurun.</p>
+        <div class="shadow-lg" style="background: rgba(22,30,50,0.95); border: 1px solid rgba(245,158,11,0.2); border-radius: 24px; overflow: hidden;">
+
+            <!-- Başlık -->
+            <div class="text-center py-5 px-4" style="border-bottom: 1px solid rgba(255,255,255,0.07);">
+                <div class="d-inline-flex p-4 rounded-circle mb-3"
+                     style="background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25);">
+                    <i class="fa-solid fa-calendar-check fs-2" style="color: #818cf8;"></i>
+                </div>
+                <h3 class="fw-bold mb-2" style="color: #f1f5f9; font-family: 'Outfit', sans-serif;">Masa Rezervasyonu</h3>
+                <p style="color: #94a3b8; font-size: 0.95rem; margin: 0;">Aşağıdaki bilgileri doldurun</p>
             </div>
-            <div class="card-body p-4">
+
+            <!-- Form -->
+            <div class="p-4 p-md-5">
                 <form asp-action="Create" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="Name" class="form-label text-warning">Adınız Soyadınız</label>
-                            <input asp-for="Name" class="form-control bg-dark text-light border-warning" required />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3 small"></div>
+
+                    <div class="row g-4">
+                        <!-- Ad Soyad -->
+                        <div class="col-md-6">
+                            <label asp-for="Name" style="color: #fbbf24; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 8px;">
+                                <i class="fa-solid fa-user me-1"></i>Adınız Soyadınız
+                            </label>
+                            <input asp-for="Name"
+                                   class="form-control"
+                                   placeholder="Örn: Ahmet Yılmaz"
+                                   required
+                                   style="background: rgba(255,255,255,0.06); color: #f1f5f9; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 16px; font-size: 0.95rem;" />
                             <span asp-validation-for="Name" class="text-danger small"></span>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="Phone" class="form-label text-warning">Telefon Numaranız</label>
-                            <input asp-for="Phone" class="form-control bg-dark text-light border-warning" required />
+
+                        <!-- Telefon -->
+                        <div class="col-md-6">
+                            <label asp-for="Phone" style="color: #fbbf24; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 8px;">
+                                <i class="fa-solid fa-phone me-1"></i>Telefon Numaranız
+                            </label>
+                            <input asp-for="Phone"
+                                   class="form-control"
+                                   placeholder="05XX XXX XX XX"
+                                   required
+                                   style="background: rgba(255,255,255,0.06); color: #f1f5f9; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 16px; font-size: 0.95rem;" />
                             <span asp-validation-for="Phone" class="text-danger small"></span>
                         </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="ReservationDate" class="form-label text-warning">Tarih ve Saat</label>
-                            <input asp-for="ReservationDate" id="resDate" type="datetime-local" class="form-control bg-dark text-light border-warning" required />
+                        <!-- Tarih ve Saat -->
+                        <div class="col-md-6">
+                            <label asp-for="ReservationDate" style="color: #fbbf24; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 8px;">
+                                <i class="fa-solid fa-clock me-1"></i>Tarih ve Saat
+                            </label>
+                            <input asp-for="ReservationDate"
+                                   id="resDate"
+                                   type="datetime-local"
+                                   class="form-control"
+                                   required
+                                   style="background: rgba(255,255,255,0.06); color: #f1f5f9; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 16px; font-size: 0.95rem; color-scheme: dark;" />
                             <span asp-validation-for="ReservationDate" class="text-danger small"></span>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label asp-for="PersonCount" class="form-label text-warning">Kişi Sayısı</label>
-                            <input asp-for="PersonCount" type="number" min="1" max="20" class="form-control bg-dark text-light border-warning" required />
+
+                        <!-- Kişi Sayısı -->
+                        <div class="col-md-6">
+                            <label asp-for="PersonCount" style="color: #fbbf24; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 8px;">
+                                <i class="fa-solid fa-users me-1"></i>Kişi Sayısı
+                            </label>
+                            <input asp-for="PersonCount"
+                                   type="number"
+                                   min="1"
+                                   max="20"
+                                   class="form-control"
+                                   required
+                                   style="background: rgba(255,255,255,0.06); color: #f1f5f9; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 16px; font-size: 0.95rem;" />
                             <span asp-validation-for="PersonCount" class="text-danger small"></span>
                         </div>
-                    </div>
 
-                    <div class="mb-4">
-                        <label asp-for="Notes" class="form-label text-warning">Özel İstekleriniz (İsteğe Bağlı)</label>
-                        <textarea asp-for="Notes" rows="3" class="form-control bg-dark text-light border-warning"></textarea>
-                        <span asp-validation-for="Notes" class="text-danger small"></span>
-                    </div>
+                        <!-- Özel İstekler -->
+                        <div class="col-12">
+                            <label asp-for="Notes" style="color: #fbbf24; font-weight: 700; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 8px;">
+                                <i class="fa-solid fa-comment-dots me-1"></i>Özel İstekleriniz <span style="color: #64748b; font-weight: 400; text-transform: none; letter-spacing: 0;">(İsteğe Bağlı)</span>
+                            </label>
+                            <textarea asp-for="Notes"
+                                      rows="3"
+                                      class="form-control"
+                                      placeholder="Doğum günü, alerji, özel masa tercihi vb."
+                                      style="background: rgba(255,255,255,0.06); color: #f1f5f9; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 16px; font-size: 0.95rem; resize: none;"></textarea>
+                            <span asp-validation-for="Notes" class="text-danger small"></span>
+                        </div>
 
-                    <div class="d-grid mb-3">
-                        <button type="submit" class="btn btn-warning fw-bold text-dark rounded-pill py-2 fs-5">Rezervasyonu Tamamla</button>
+                        <!-- Gönder -->
+                        <div class="col-12">
+                            <button type="submit"
+                                    class="btn btn-warning w-100 fw-bold rounded-pill py-3 shadow-lg"
+                                    style="font-size: 1.05rem; letter-spacing: 0.05em;">
+                                <i class="fa-solid fa-calendar-check me-2"></i>Rezervasyonu Tamamla
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -58,10 +109,24 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('resDate').value = now.toISOString().slice(0, 16);
+        });
+
+        // Input focus efekti
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('focus', function () {
+                this.style.borderColor = '#f59e0b';
+                this.style.boxShadow = '0 0 0 3px rgba(245,158,11,0.2)';
+                this.style.background = 'rgba(255,255,255,0.09)';
+            });
+            input.addEventListener('blur', function () {
+                this.style.borderColor = 'rgba(255,255,255,0.15)';
+                this.style.boxShadow = 'none';
+                this.style.background = 'rgba(255,255,255,0.06)';
+            });
         });
     </script>
 }

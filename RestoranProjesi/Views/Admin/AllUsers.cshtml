@@ -1,0 +1,146 @@
+@model IEnumerable<RestoranProjesi.Models.Entities.AppUser>
+@{
+    ViewData["Title"] = "Tüm Hesaplar";
+}
+
+<div class="container-fluid py-4" style="font-family: 'Outfit', sans-serif;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white fw-bold mb-0">
+            <i class="fa-solid fa-users text-warning me-2"></i>@(ViewBag.ShowDeleted == true ? "Silinen Hesaplar" : "Kayıtlı Tüm Hesaplar")
+        </h2>
+        <div>
+            @if (ViewBag.ShowDeleted == true)
+            {
+                <a asp-action="AllUsers" asp-route-showDeleted="false" class="btn btn-outline-success rounded-pill shadow-sm">
+                    <i class="fa-solid fa-user-check me-1"></i>Aktif Hesapları Gör
+                </a>
+            }
+            else
+            {
+                <a asp-action="AllUsers" asp-route-showDeleted="true" class="btn btn-outline-danger rounded-pill shadow-sm">
+                    <i class="fa-solid fa-user-slash me-1"></i>Silinen Hesapları Gör
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="card bg-dark border-secondary rounded-4 shadow-lg overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0 align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th class="px-4 py-3 text-dark">Ad Soyad</th>
+                            <th class="px-4 py-3 text-dark">E-posta</th>
+                            <th class="px-4 py-3 text-dark">Telefon Numarası</th>
+                            <th class="px-4 py-3 text-dark text-end">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td class="px-4 py-3 text-white">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center me-3 border border-primary border-opacity-50 shadow-sm" style="width: 40px; height: 40px;">
+                                            <i class="fa-solid fa-user text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold">@user.FirstName @user.LastName</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3 text-light opacity-75">@user.Email</td>
+                                <td class="px-4 py-3 text-light opacity-75">@(string.IsNullOrEmpty(user.PhoneNumber) ? "-" : user.PhoneNumber)</td>
+                                <td class="px-4 py-3 text-end">
+                                    @if (user.IsRestored && !user.IsDeleted)
+                                    {
+                                        <span class="badge bg-info text-white rounded-pill px-3 py-2 me-2 shadow-sm"><i class="fa-solid fa-clock-rotate-left me-1"></i>Geri Alındı</span>
+                                    }
+
+                                    @if (user.Email == "admin@restoran.com")
+                                    {
+                                        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill shadow-sm"><i class="fa-solid fa-shield-halved me-1"></i>Sistem Yöneticisi</span>
+                                    }
+                                    else if (User.Identity.Name != user.Email)
+                                    {
+                                        @if (user.IsDeleted)
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-success rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#restoreModal-@user.Id">
+                                                <i class="fa-solid fa-rotate-left me-1"></i>Geri Yükle
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-danger rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@user.Id">
+                                                <i class="fa-solid fa-trash-can me-1"></i>Hesabı Sil
+                                            </button>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success px-3 py-2 rounded-pill shadow-sm"><i class="fa-solid fa-circle-check me-1"></i>Aktif (Siz)</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@foreach (var user in Model)
+{
+    @if (User.Identity.Name != user.Email && user.Email != "admin@restoran.com")
+    {
+        @if (!user.IsDeleted)
+        {
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal-@user.Id" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark border-secondary rounded-4 shadow-lg">
+                        <div class="modal-header border-secondary">
+                            <h5 class="modal-title text-danger fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i>Hesabı Sil (Pasifleştir)</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-light">
+                            <p class="mb-0"><strong>@user.FirstName @user.LastName</strong> (@user.Email) isimli hesabı sistemden silmek istediğinize emin misiniz? Hesap silinenler listesine taşınacaktır.</p>
+                        </div>
+                        <div class="modal-footer border-secondary">
+                            <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-dismiss="modal">İptal</button>
+                            <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post">
+                                <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">Evet, Hesabı Sil</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Restore Modal -->
+            <div class="modal fade" id="restoreModal-@user.Id" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content bg-dark border-secondary rounded-4 shadow-lg">
+                        <div class="modal-header border-secondary">
+                            <h5 class="modal-title text-success fw-bold"><i class="fa-solid fa-rotate-left me-2"></i>Hesabı Geri Yükle</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-light">
+                            <p class="mb-0"><strong>@user.FirstName @user.LastName</strong> (@user.Email) isimli hesabı tekrar aktif hale getirmek istiyor musunuz?</p>
+                        </div>
+                        <div class="modal-footer border-secondary">
+                            <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-dismiss="modal">İptal</button>
+                            <form asp-action="RestoreUser" asp-route-id="@user.Id" method="post">
+                                <button type="submit" class="btn btn-success rounded-pill px-4 fw-bold">Geri Yükle</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+}
+

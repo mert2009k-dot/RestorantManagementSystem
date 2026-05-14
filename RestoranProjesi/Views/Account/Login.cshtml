@@ -24,12 +24,13 @@
                         <label asp-for="Password" class="form-label text-warning">Şifre</label>
                         <div class="input-group">
                             <span class="input-group-text bg-dark border-warning text-warning"><i class="fa-solid fa-lock"></i></span>
-                            <input asp-for="Password" id="loginPassword" class="form-control bg-dark text-light border-warning" placeholder="******" />
+                            <input asp-for="Password" id="loginPassword" class="form-control bg-dark text-light border-warning" placeholder="******" onkeyup="checkCapsLock(event, 'capsLockWarningLogin')" />
                             <button class="btn btn-outline-warning" type="button" onclick="togglePassword('loginPassword', 'eyeIconLogin')">
                                 <i class="fa-solid fa-eye" id="eyeIconLogin"></i>
                             </button>
                         </div>
                         <span asp-validation-for="Password" class="text-danger small"></span>
+                        <div id="capsLockWarningLogin" class="small mt-1 fw-bold" style="display: none;"></div>
                     </div>
                     <div class="d-grid mb-3">
                         <button type="submit" class="btn btn-warning fw-bold text-dark rounded-pill">Giriş Yap</button>
@@ -57,6 +58,19 @@
                 input.type = "password";
                 icon.classList.remove("fa-eye-slash");
                 icon.classList.add("fa-eye");
+            }
+        }
+
+        function checkCapsLock(event, warningId) {
+            var warningEl = document.getElementById(warningId);
+            if (event.getModifierState && event.getModifierState('CapsLock')) {
+                warningEl.style.display = 'block';
+                warningEl.innerHTML = '<i class="fa-solid fa-circle-exclamation me-1"></i>Caps Lock Açık';
+                warningEl.className = 'small mt-1 fw-bold text-success';
+            } else {
+                warningEl.style.display = 'block';
+                warningEl.innerHTML = '<i class="fa-solid fa-circle-check me-1"></i>Caps Lock Kapalı';
+                warningEl.className = 'small mt-1 fw-bold text-danger';
             }
         }
     </script>

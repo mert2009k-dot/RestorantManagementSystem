@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="tr" style="color-scheme: dark;">
+<html lang="tr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Hanedan</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <meta name="color-scheme" content="dark">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
@@ -24,63 +23,6 @@
                 </button>
                 
                 <div class="navbar-collapse collapse d-lg-flex justify-content-between align-items-center">
-                    
-                    <!-- Sol: Hesap Ayarları -->
-                    @if (User.Identity != null && User.Identity.IsAuthenticated)
-                    {
-                        <ul class="navbar-nav me-auto d-none d-lg-flex">
-                            <li class="nav-item dropdown">
-                                <a class="btn btn-outline-warning rounded-pill px-3 fw-bold dropdown-toggle d-flex align-items-center" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fa-solid fa-user-gear me-2"></i>Hesap Ayarları
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-dark shadow-lg border-secondary mt-2 rounded-3" aria-labelledby="accountDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="fa-solid fa-id-card me-2 text-info"></i>Profilimi Düzenle</a></li>
-                                    <li><hr class="dropdown-divider border-secondary"></li>
-                                    <li><h6 class="dropdown-header text-warning">Kayıtlı Hesaplar</h6></li>
-                                    <!-- Aktif Hesap -->
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
-                                            <i class="fa-solid fa-circle-user fs-5 me-2"></i>
-                                            <span class="text-truncate" style="max-width: 150px;">@User.Identity.Name</span>
-                                            <i class="fa-solid fa-circle-check text-success ms-auto"></i>
-                                        </a>
-                                    </li>
-                                    <!-- Diğer Hesaplar (ViewComponent veya Session üzerinden eklenebilir) -->
-                                    @if (Context.Request.Cookies["LinkedAccounts"] != null)
-                                    {
-                                        var linkedAccounts = Context.Request.Cookies["LinkedAccounts"]!.Split(',').Where(e => !string.IsNullOrEmpty(e) && e != User.Identity.Name);
-                                        foreach(var acc in linkedAccounts)
-                                        {
-                                            <li class="d-flex align-items-center position-relative">
-                                                <a class="dropdown-item d-flex align-items-center flex-grow-1 pe-5" asp-controller="Account" asp-action="SwitchAccount" asp-route-email="@acc">
-                                                    <i class="fa-regular fa-circle-user fs-5 me-2"></i>
-                                                    <span class="text-truncate" style="max-width: 130px;">@acc</span>
-                                                </a>
-                                                <form asp-controller="Account" asp-action="RemoveLinkedAccount" asp-route-email="@acc" method="post" class="position-absolute end-0 me-2" style="z-index: 10;">
-                                                    <button type="submit" class="btn btn-sm text-danger border-0 bg-transparent p-1" title="Hesabı Kaldır">
-                                                        <i class="fa-solid fa-xmark fs-5"></i>
-                                                    </button>
-                                                </form>
-                                            </li>
-                                        }
-                                    }
-                                    <li><hr class="dropdown-divider border-secondary"></li>
-                                    <li><a class="dropdown-item text-warning" asp-controller="Account" asp-action="AddLinkedAccount"><i class="fa-solid fa-user-plus me-2"></i>Yeni Hesap Ekle</a></li>
-                                    <li><hr class="dropdown-divider border-secondary"></li>
-                                    <li>
-                                        <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
-                                            <button type="submit" class="dropdown-item text-danger fw-bold"><i class="fa-solid fa-right-from-bracket me-2"></i>Bu hesaptan çıkın</button>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    }
-                    else
-                    {
-                        <ul class="navbar-nav me-auto d-none d-lg-flex"></ul>
-                    }
-
                     <!-- Orta: Linkler -->
                     <ul class="navbar-nav mx-auto justify-content-center fw-semibold fs-5 gap-3 align-items-center">
                         <li class="nav-item me-4">
@@ -89,8 +31,8 @@
                                 var homeUrl = tableNum.HasValue ? "/Menu" : "/";
                             }
                             <a class="nav-link p-0 d-flex align-items-center" href="@(tableNum.HasValue ? "javascript:void(0)" : homeUrl)" style="@(tableNum.HasValue ? "cursor: default; pointer-events: none;" : "")">
-                                <i class="fa-solid fa-utensils text-primary fs-3 me-2"></i>
-                                <span class="fw-bold fs-3 text-white" style="letter-spacing: 1px; font-family: 'Outfit', sans-serif;">HANEDAN</span>
+                                <i class="fa-solid fa-utensils text-warning fs-3 me-2"></i>
+                                <span class="fw-bold fs-3 text-warning" style="letter-spacing: 2px; font-family: 'Playfair Display', serif;">HANEDAN</span>
                             </a>
                         </li>
                         @if (!tableNum.HasValue)
@@ -117,7 +59,7 @@
                                         <i class="fa-solid fa-right-from-bracket me-2"></i>ÇIKIŞ
                                     </button>
                                 </form>
-                                <a class="btn btn-primary text-white fw-bold rounded-pill px-4 shadow-sm" asp-area="" asp-controller="Cart" asp-action="Index">
+                                <a class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow-sm" asp-area="" asp-controller="Cart" asp-action="Index">
                                     <i class="fa-solid fa-cart-shopping me-2"></i>ÖDEMEYE GEÇİN
                                 </a>
                             }
@@ -133,14 +75,7 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="btn rounded-pill px-4 fw-bold me-2" style="background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%); color: #fff; border: none; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);" asp-area="" asp-controller="Admin" asp-action="Index">
-                                        <i class="fa-solid fa-crown me-2"></i>Admin Paneli
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="btn btn-outline-light rounded-pill px-4 fw-bold me-2" asp-area="" asp-controller="Admin" asp-action="Orders">
-                                        <i class="fa-solid fa-list-check me-2"></i>Sipariş Yönetimi
-                                    </a>
+                                    <a class="btn btn-outline-warning rounded-pill px-4 fw-bold" asp-area="" asp-controller="Admin" asp-action="Index">Admin Paneli</a>
                                 </li>
                             }
                             <li class="nav-item">
@@ -153,10 +88,8 @@
                                     <i class="fa-solid fa-heart me-2"></i>Favorilerim
                                 </a>
                             </li>
-                            <li class="nav-item d-none d-xl-flex align-items-center ms-2 border-start border-secondary ps-3">
-                                <a asp-area="" asp-controller="Account" asp-action="Profile" class="nav-link text-light fw-medium d-flex align-items-center" style="transition: color 0.3s;" onmouseover="this.style.color='#f59e0b'" onmouseout="this.style.color=''">
-                                    <i class="fa-regular fa-circle-user text-warning fs-4 me-2"></i> @User.Identity.Name
-                                </a>
+                            <li class="nav-item d-none d-xl-flex align-items-center ms-2 text-light fw-medium border-start border-secondary ps-3">
+                                <i class="fa-regular fa-circle-user text-warning fs-4 me-2"></i> @User.Identity.Name
                             </li>
                             <li class="nav-item ms-2">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
@@ -170,7 +103,7 @@
                                 <a class="btn btn-outline-light rounded-pill px-4 fw-bold" asp-area="" asp-controller="Account" asp-action="Login">Giriş Yap</a>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-primary text-white fw-bold rounded-pill px-4 shadow" asp-area="" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+                                <a class="btn btn-warning text-dark fw-bold rounded-pill px-4 shadow" asp-area="" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
                             </li>
                         }
                     </ul>
@@ -192,7 +125,7 @@
     {
         <footer class="footer text-muted py-4 mt-5">
             <div class="container text-center">
-                &copy; 2026 - Hanedan - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-primary text-decoration-none">Gizlilik</a>
+                &copy; 2026 - Hanedan - <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-warning text-decoration-none">Gizlilik</a>
                 <div class="mt-2">
                     <a href="#" class="text-light me-3 fs-5"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#" class="text-light me-3 fs-5"><i class="fa-brands fa-twitter"></i></a>

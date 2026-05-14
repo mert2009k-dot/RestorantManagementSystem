@@ -30,15 +30,31 @@
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
                     <div class="mb-3">
+                        <label asp-for="PhoneNumber" class="form-label text-warning">Telefon Numarası</label>
+                        <div class="input-group">
+                            <select id="countryCode" class="form-select bg-dark text-light border-warning" style="max-width: 110px;">
+                                <option value="+90">🇹🇷 +90</option>
+                                <option value="+1">🇺🇸 +1</option>
+                                <option value="+44">🇬🇧 +44</option>
+                                <option value="+49">🇩🇪 +49</option>
+                                <option value="+33">🇫🇷 +33</option>
+                            </select>
+                            <input type="text" id="phonePart" class="form-control bg-dark text-light border-warning" placeholder="5551234567" oninput="this.value = this.value.replace(/[^0-9]/g, ''); updatePhone();" maxlength="11" />
+                        </div>
+                        <input type="hidden" asp-for="PhoneNumber" id="fullPhoneNumber" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
                         <label asp-for="Password" class="form-label text-warning">Şifre</label>
                         <div class="input-group">
                             <span class="input-group-text bg-dark border-warning text-warning"><i class="fa-solid fa-lock"></i></span>
-                            <input asp-for="Password" id="regPassword" class="form-control bg-dark text-light border-warning" />
+                            <input asp-for="Password" id="regPassword" class="form-control bg-dark text-light border-warning" onkeyup="checkCapsLock(event, 'capsLockWarningReg')" />
                             <button class="btn btn-outline-warning" type="button" onclick="togglePassword('regPassword', 'eyeIconReg')">
                                 <i class="fa-solid fa-eye" id="eyeIconReg"></i>
                             </button>
                         </div>
                         <span asp-validation-for="Password" class="text-danger small"></span>
+                        <div id="capsLockWarningReg" class="small mt-1 fw-bold" style="display: none;"></div>
                     </div>
                     <div class="mb-4">
                         <label asp-for="ConfirmPassword" class="form-label text-warning">Şifre (Tekrar)</label>
@@ -79,5 +95,31 @@
                 icon.classList.add("fa-eye");
             }
         }
+
+        function checkCapsLock(event, warningId) {
+            var warningEl = document.getElementById(warningId);
+            if (event.getModifierState && event.getModifierState('CapsLock')) {
+                warningEl.style.display = 'block';
+                warningEl.innerHTML = '<i class="fa-solid fa-circle-exclamation me-1"></i>Caps Lock Açık';
+                warningEl.className = 'small mt-1 fw-bold text-success';
+            } else {
+                warningEl.style.display = 'block';
+                warningEl.innerHTML = '<i class="fa-solid fa-circle-check me-1"></i>Caps Lock Kapalı';
+                warningEl.className = 'small mt-1 fw-bold text-danger';
+            }
+        }
+
+        function updatePhone() {
+            var code = document.getElementById("countryCode").value;
+            var num = document.getElementById("phonePart").value;
+            document.getElementById("fullPhoneNumber").value = code + num;
+        }
+
+        document.getElementById("countryCode").addEventListener("change", updatePhone);
+        
+        // Form submit before hook to ensure value is populated
+        document.querySelector('form').addEventListener('submit', function() {
+            updatePhone();
+        });
     </script>
 }

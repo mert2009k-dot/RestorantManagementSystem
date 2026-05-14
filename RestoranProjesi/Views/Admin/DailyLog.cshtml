@@ -28,19 +28,28 @@
                             </select>
                         </div>
                         <div class="col-4 d-flex align-items-end">
-                            <button type="submit" class="btn btn-warning w-100 fw-bold">
+                            <button type="submit" class="btn btn-warning w-100 fw-bold" title="Seçilen tarihe ait verileri getirir">
                                 <i class="fa-solid fa-magnifying-glass me-2"></i>Sorgula
                             </button>
                         </div>
                     </form>
                 </div>
-                <div class="col-md-3">
-                    <button type="button" class="btn btn-outline-success w-100 fw-bold rounded-pill" data-bs-toggle="modal" data-bs-target="#newDayModal">
-                        <i class="fa-solid fa-plus-circle me-2"></i>Yeni Gün Sayfası
-                    </button>
-                </div>
-                <div class="col-md-4 text-end">
-                    <div class="text-light opacity-50 small">Rapor Oluşturma Zamanı: @DateTime.Now.ToString("dd.MM.yyyy HH:mm")</div>
+                <div class="col-md-7">
+                    <div class="d-flex gap-2 justify-content-end align-items-center">
+                        <button type="button" class="btn btn-sm btn-outline-success fw-bold rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#newDayModal">
+                            <i class="fa-solid fa-plus-circle me-1"></i>Yeni Gün Sayfası
+                        </button>
+                        <form asp-action="CreateDailyLog" method="post" class="m-0">
+                            <input type="hidden" name="date" value="@DateTime.Now.ToString("dd.MM.yyyy")" />
+                            <button type="submit" class="btn btn-sm btn-success fw-bold rounded-pill px-3">
+                                <i class="fa-solid fa-calendar-day me-1"></i>Bugünün Sayfasını Oluştur
+                            </button>
+                        </form>
+                        <a asp-action="AllTimeStats" class="btn btn-sm btn-info fw-bold rounded-pill px-3 text-white">
+                            <i class="fa-solid fa-chart-pie me-1"></i>Tüm Hesaplamaları Göster
+                        </a>
+                        <div class="text-light opacity-50 small ms-3">@DateTime.Now.ToString("dd.MM.yyyy HH:mm")</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -120,7 +129,7 @@
                         <div class="mt-4">
                             <span class="badge rounded-pill bg-success bg-opacity-25 text-success border border-success px-4 py-2 me-2">Tamamlanan: @Model.CompletedOrders</span>
                             <span class="badge rounded-pill bg-danger bg-opacity-25 text-danger border border-danger px-4 py-2 me-2">İptal: @Model.CancelledOrders</span>
-                            <span class="badge rounded-pill bg-warning bg-opacity-25 text-warning border border-warning px-4 py-2">Bekliyor: @Model.PendingOrders</span>
+                            <span class="badge rounded-pill bg-warning text-dark px-4 py-2">Bekliyor: @Model.PendingOrders</span>
                         </div>
                     </div>
                 </div>

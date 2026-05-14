@@ -37,7 +37,7 @@
                             <button onclick="toggleFavorite(@fav.ProductId)" class="btn btn-link text-danger p-0">
                                 <i class="fa-solid fa-heart fs-4"></i>
                             </button>
-                            <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-inline">
+                            <form asp-controller="Cart" asp-action="Add" method="post" class="d-inline">
                                 <input type="hidden" name="productId" value="@fav.ProductId" />
                                 <button type="submit" class="btn btn-sm btn-warning rounded-pill px-3">Sepete Ekle</button>
                             </form>

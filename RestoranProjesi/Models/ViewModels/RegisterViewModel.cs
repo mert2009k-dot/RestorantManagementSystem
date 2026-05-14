@@ -15,6 +15,10 @@ namespace RestoranProjesi.Models.ViewModels
         [RegularExpression(@"^[a-zA-Z0-9._%+-]+@gmail\.com$", ErrorMessage = "Sadece @gmail.com uzantılı e-posta adresleri ile kayıt olabilirsiniz.")]
         public string Email { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Telefon numarası gereklidir.")]
+        [RegularExpression(@"^\+?[1-9]\d{1,14}$", ErrorMessage = "Lütfen geçerli bir telefon numarası girin.")]
+        public string PhoneNumber { get; set; } = string.Empty;
+
         [Required(ErrorMessage = "Şifre gereklidir.")]
         [DataType(DataType.Password)]
         [MinLength(6, ErrorMessage = "Şifre en az 6 karakter olmalıdır.")]

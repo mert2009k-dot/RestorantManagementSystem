@@ -3,75 +3,226 @@
     ViewData["Title"] = "Ana Sayfa";
 }
 
-<!-- TAM GENİŞLİKTE HERO BÖLÜMÜ -->
-<div class="hero-section shadow-lg d-flex align-items-center justify-content-center text-center" 
-     style="height: 100vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1920&q=80') center/cover; width: 100%; border-radius: 0; margin-top: -80px;">
-    <div class="container">
-        <h1 class="display-1 fw-bold text-white mb-4" style="letter-spacing: 2px; text-shadow: 2px 2px 15px rgba(0,0,0,0.9);">HOŞ GELDİNİZ</h1>
-        <p class="lead text-white mb-5 fs-3 px-md-5 mx-auto" style="max-width: 800px; opacity: 0.95; text-shadow: 1px 1px 8px rgba(0,0,0,0.9);">
-            Akdeniz'in Eşsiz Lezzetleri, Boğaz'ın Büyüleyici Manzarası Eşliğinde Unutulmaz Bir Deneyim.
+<!-- =============================================
+     HERO BÖLÜMÜ — TAM EKRAN
+     ============================================= -->
+<div class="hero-section d-flex align-items-center justify-content-center text-center"
+     style="height: 100vh; min-height: 600px;
+            background: linear-gradient(160deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.35) 60%, rgba(245,158,11,0.12) 100%),
+                        url('https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            width: 100%; margin-top: -80px; position: relative; overflow: hidden;">
+
+    <!-- Altın ışık efekti -->
+    <div style="position:absolute; bottom:-80px; left:50%; transform:translateX(-50%);
+                width:600px; height:200px; border-radius:50%;
+                background: radial-gradient(ellipse, rgba(245,158,11,0.18) 0%, transparent 70%);
+                pointer-events:none;"></div>
+
+    <div class="container position-relative" style="z-index:2;">
+        <div class="d-inline-flex align-items-center gap-2 mb-4 px-4 py-2 rounded-pill animate-fade-up"
+             style="background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); backdrop-filter: blur(8px);">
+            <i class="fa-solid fa-utensils text-warning"></i>
+            <span class="text-warning fw-semibold" style="font-size: 0.9rem; letter-spacing: 0.1em; text-transform: uppercase;">İstanbul'un En İyi Restoranı</span>
+        </div>
+
+        <h1 class="fw-black text-white mb-4 animate-fade-up-delay-1"
+            style="font-size: clamp(3rem, 8vw, 6.5rem); letter-spacing: -1px;
+                   text-shadow: 0 4px 30px rgba(0,0,0,0.8); line-height: 1.05;
+                   font-family: 'Outfit', sans-serif;">
+            HOŞ GELDİNİZ
+        </h1>
+
+        <p class="mb-6 animate-fade-up-delay-2"
+           style="font-size: clamp(1rem, 2.5vw, 1.3rem); color: rgba(255,255,255,0.88);
+                  max-width: 620px; margin: 0 auto 2.5rem; line-height: 1.7;
+                  text-shadow: 0 2px 12px rgba(0,0,0,0.7);">
+            Akdeniz'in Eşsiz Lezzetleri, Boğaz'ın Büyüleyici Manzarası Eşliğinde<br>
+            <span class="text-warning fw-semibold">Unutulmaz Bir Deneyim</span> Sizi Bekliyor.
         </p>
-        <div class="d-flex flex-wrap justify-content-center gap-4">
-            <a href="/Menu" class="btn btn-outline-warning btn-lg px-5 py-3 fw-bold rounded-pill hover-scale" style="border-width: 2px; letter-spacing: 1px;">
-                MENÜYÜ KEŞFET
+
+        <div class="d-flex flex-wrap justify-content-center gap-3 animate-fade-up-delay-3">
+            <a href="/Menu"
+               class="btn btn-outline-warning btn-lg px-5 py-3 fw-bold rounded-pill hover-scale"
+               style="border-width: 2px; letter-spacing: 0.05em; font-size: 1rem;">
+                <i class="fa-solid fa-book-open me-2"></i>MENÜYÜ KEŞFET
             </a>
-            <a href="/Reservation/Create" class="btn btn-warning btn-lg px-5 py-3 fw-bold rounded-pill shadow-lg hover-scale" style="letter-spacing: 1px;">
-                REZERVASYON YAP
+            <a href="/Reservation/Create"
+               class="btn btn-warning btn-lg px-5 py-3 fw-bold rounded-pill shadow-lg hover-scale"
+               style="letter-spacing: 0.05em; font-size: 1rem;">
+                <i class="fa-solid fa-calendar-check me-2"></i>REZERVASYON YAP
             </a>
+        </div>
+
+        <!-- Kaydır oku -->
+        <div class="mt-5 pt-3" style="animation: bounce 2s infinite;">
+            <i class="fa-solid fa-chevron-down text-warning" style="font-size: 1.4rem; opacity: 0.8;"></i>
         </div>
     </div>
 </div>
 
-<div class="container mt-5 pt-5">
-    <!-- ÖNE ÇIKAN LEZZETLER (DAHA GENİŞ DÜZEN) -->
-    <div class="d-flex justify-content-between align-items-end mb-4 border-bottom border-secondary pb-3">
-        <div>
-            <h2 class="fw-bold text-warning mb-0 fs-1">Öne Çıkan Lezzetler</h2>
-            <p class="text-muted fs-5 mb-0 mt-2">Şefin özel tavsiyeleri</p>
+<!-- =============================================
+     İSTATİSTİK BÖLÜMÜ
+     ============================================= -->
+<div style="background: linear-gradient(180deg, rgba(13,15,26,0) 0%, var(--bg-dark) 100%);">
+    <div class="container py-5">
+        <div class="row g-4 text-center py-3">
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">Yıllık Deneyim</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">200+</div>
+                    <div class="stat-label">Menü Seçeneği</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">50k+</div>
+                    <div class="stat-label">Mutlu Müşteri</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-number">4.9</div>
+                    <div class="stat-label"><i class="fa-solid fa-star text-warning me-1"></i>Ortalama Puan</div>
+                </div>
+            </div>
         </div>
-        <a href="/Menu" class="btn btn-outline-warning rounded-pill px-4">Tümünü Gör <i class="fa-solid fa-arrow-right ms-2"></i></a>
+    </div>
+</div>
+
+<!-- =============================================
+     ÖZELLİKLER BÖLÜMÜ
+     ============================================= -->
+<div class="container pb-5">
+    <div class="text-center mb-5">
+        <span class="d-inline-block px-3 py-1 rounded-pill mb-3"
+              style="background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.25); color: #a5b4fc; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;">
+            Neden Hanedan?
+        </span>
+        <h2 class="section-title">Farkımızı Hissedin</h2>
+        <p class="section-subtitle mx-auto" style="max-width: 500px;">
+            Lezzetin ötesinde bir deneyim sunuyoruz
+        </p>
+    </div>
+    <div class="row g-4 mb-5">
+        <div class="col-sm-6 col-lg-3">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-fire"></i></div>
+                <h5>Taze Malzeme</h5>
+                <p>Her gün taze seçilen, mevsiminde toplanan doğal malzemeler kullanıyoruz.</p>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                <h5>Hızlı Teslimat</h5>
+                <p>Siparişinizi sıcak ve taze, 30 dakika içinde kapınıza teslim ediyoruz.</p>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-hat-chef"></i></div>
+                <h5>Usta Şefler</h5>
+                <p>Uluslararası deneyimli şeflerimiz en özel tariflerle lezzet sanatı sunuyor.</p>
+            </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fa-solid fa-leaf"></i></div>
+                <h5>%100 Doğal</h5>
+                <p>Yapay katkı maddesi içermeyen, sağlıklı ve dengeli beslenme seçenekleri.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- =============================================
+     ÖNE ÇIKAN LEZZETLER
+     ============================================= -->
+<div class="container pb-5">
+    <!-- Başlık -->
+    <div class="d-flex justify-content-between align-items-end mb-4 pb-3"
+         style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div>
+            <span class="d-inline-block px-3 py-1 rounded-pill mb-2"
+                  style="background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25);
+                         color: var(--accent); font-size: 0.82rem; font-weight: 600;
+                         letter-spacing: 0.08em; text-transform: uppercase;">
+                <i class="fa-solid fa-medal me-1"></i>Şef Seçimi
+            </span>
+            <h2 class="section-title mb-1">Öne Çıkan Lezzetler</h2>
+            <p class="section-subtitle mb-0">Şefimizin özel tavsiye ettiği yemekler</p>
+        </div>
+        <a href="/Menu" class="btn btn-outline-warning rounded-pill px-4 fw-semibold d-none d-md-inline-flex align-items-center gap-2">
+            Tümünü Gör <i class="fa-solid fa-arrow-right"></i>
+        </a>
     </div>
 
-    <div class="row g-4 mb-5 pb-5">
-        @if(Model != null && Model.Any())
+    <!-- Kart Izgara -->
+    <div class="row g-4 mb-4">
+        @if (Model != null && Model.Any())
         {
-            @foreach(var item in Model)
+            @foreach (var item in Model)
             {
-                <div class="col-sm-6 col-lg-4 col-xl-3">
-                    <div class="food-card h-100" style="position: relative;">
-                        <img src="@item.ImageUrl" alt="@item.Name" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'">
-                        
-                        <div class="food-card-body p-4 d-flex flex-column">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h4 class="card-title fw-bold text-white mb-0 me-2">@item.Name</h4>
+                <div class="col-sm-6 col-lg-4 col-xl-3 d-flex">
+                    <div class="food-card w-100">
+                        <!-- Yemek resmi -->
+                        <img src="@item.ImageUrl"
+                             alt="@item.Name"
+                             onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80'" />
+
+                        <!-- İçerik -->
+                        <div class="food-card-body">
+                            <!-- İsim + Fiyat -->
+                            <div class="d-flex justify-content-between align-items-start mb-2 gap-2">
+                                <h4 class="card-title mb-0 flex-grow-1">@item.Name</h4>
                                 <span class="food-price">₺@item.Price</span>
                             </div>
-                            <p class="text-light mb-3" style="opacity: 0.9; min-height: 48px; font-size: 1rem;">@item.Description</p>
-                            
+
+                            <!-- Açıklama -->
+                            <p class="mb-3" style="min-height: 42px; font-size: 0.86rem;">@item.Description</p>
+
+                            <!-- Şef rozeti + Favori -->
                             <div class="d-flex justify-content-between align-items-center mb-2">
-                                <div class="text-warning fw-bold d-flex align-items-center" style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem;">
-                                    <i class="fa-solid fa-medal me-2"></i>Şefin Tavsiyesi
-                                </div>
+                                <span class="chef-badge">
+                                    <i class="fa-solid fa-medal me-1" style="color: var(--accent);"></i>Şefin Tavsiyesi
+                                </span>
                                 <form asp-controller="Menu" asp-action="AddToFavorites" asp-route-id="@item.Id" method="post">
-                                    <button type="submit" class="btn btn-link text-danger p-0 text-decoration-none hover-scale" title="Favorilere Ekle">
-                                        <i class="fa-solid fa-heart fs-4"></i>
+                                    <button type="submit"
+                                            class="btn btn-link p-0 text-decoration-none hover-scale"
+                                            title="Favorilere Ekle"
+                                            style="color: #f87171;">
+                                        <i class="fa-solid fa-heart fs-5"></i>
                                     </button>
                                 </form>
                             </div>
 
+                            <!-- Yıldızlar -->
                             <div class="mb-3">
-                                <div class="text-white-50 small">
-                                    <i class="fa-solid fa-star text-warning me-1"></i><i class="fa-solid fa-star text-warning me-1"></i><i class="fa-solid fa-star text-warning me-1"></i><i class="fa-solid fa-star text-warning me-1"></i><i class="fa-solid fa-star text-warning"></i>
-                                </div>
+                                <span style="color: var(--accent); font-size: 0.82rem;">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                </span>
+                                <span style="color: var(--text-muted); font-size: 0.78rem; margin-left: 4px;">(5.0)</span>
                             </div>
 
+                            <!-- Sepete ekle formu -->
                             <form asp-controller="Cart" asp-action="Add" method="post" class="mt-auto">
                                 <input type="hidden" name="productId" value="@item.Id" />
-                                <div class="input-group">
-                                    <span class="input-group-text bg-dark text-warning border-secondary">Adet</span>
-                                    <input type="number" name="quantity" class="form-control bg-dark text-white border-secondary fw-bold text-center" value="1" min="1" max="20" />
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">Adet</span>
+                                    <input type="number" name="quantity"
+                                           class="form-control text-center fw-bold"
+                                           value="1" min="1" max="20" />
                                     <button type="submit" class="btn btn-warning fw-bold px-3">
-                                        <i class="fa-solid fa-cart-plus me-1"></i> Ekle
+                                        <i class="fa-solid fa-cart-plus me-1"></i>Ekle
                                     </button>
                                 </div>
                             </form>
@@ -80,48 +231,144 @@
                 </div>
             }
         }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <i class="fa-solid fa-bowl-food text-warning" style="font-size: 3rem; opacity: 0.4;"></i>
+                <p class="text-muted mt-3">Henüz öne çıkan ürün bulunmuyor.</p>
+            </div>
+        }
     </div>
 
-    <!-- NEDEN BİZ? & BİZ NEREDEYİZ (YAN YANA FARKLI TASARIM) -->
-    <div class="row g-5 align-items-stretch mb-5">
+    <div class="text-center d-md-none">
+        <a href="/Menu" class="btn btn-outline-warning rounded-pill px-5 fw-semibold">
+            Tüm Menüyü Gör <i class="fa-solid fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+</div>
+
+<!-- =============================================
+     NEDEN BİZ? & BİZ NEREDEYİZ
+     ============================================= -->
+<div class="container pb-5">
+    <div class="row g-4 align-items-stretch">
+        <!-- Neden Biz -->
         <div class="col-lg-6">
-            <div class="bg-dark p-5 rounded-4 shadow-lg h-100 d-flex flex-column justify-content-center" style="border: 1px solid rgba(197, 160, 89, 0.3); position: relative; overflow: hidden;">
-                <i class="fa-solid fa-quote-left text-warning opacity-25" style="font-size: 8rem; position: absolute; top: -20px; left: -10px;"></i>
-                <h2 class="fw-bold text-warning mb-4 display-5" style="z-index: 1;">Neden Biz?</h2>
-                <p class="fs-4 text-white lh-base" style="z-index: 1;">Sadece en taze malzemeleri kullanıyor, usta şeflerimizin dokunuşlarıyla sıradan yemekleri birer sanat eserine dönüştürüyoruz.</p>
-                <div class="d-flex align-items-center mt-4" style="z-index: 1;">
-                    <i class="fa-solid fa-truck-fast text-warning fs-1 me-4"></i>
-                    <div>
-                        <h4 class="text-white mb-1">Hızlı Teslimat</h4>
-                        <p class="text-muted mb-0">Sıcak ve taze kapınızda.</p>
+            <div class="info-box h-100">
+                <i class="fa-solid fa-quote-left"
+                   style="font-size: 6rem; position: absolute; top: -10px; left: -5px;
+                          color: var(--accent); opacity: 0.08; pointer-events: none;"></i>
+                <div style="position: relative; z-index: 1;">
+                    <span class="d-inline-block px-3 py-1 rounded-pill mb-3"
+                          style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25);
+                                 color: var(--accent); font-size: 0.8rem; font-weight: 600;
+                                 letter-spacing: 0.08em; text-transform: uppercase;">
+                        Hakkımızda
+                    </span>
+                    <h2 class="fw-bold mb-4" style="font-size: 2rem; color: var(--text-main);">Neden Biz?</h2>
+                    <p style="font-size: 1.05rem; color: var(--text-light); line-height: 1.8;">
+                        Sadece en taze malzemeleri kullanıyor, usta şeflerimizin dokunuşlarıyla sıradan yemekleri
+                        birer sanat eserine dönüştürüyoruz. Her tabak, bir hikaye anlatır.
+                    </p>
+
+                    <div class="d-flex align-items-center mt-4 p-3 rounded-3"
+                         style="background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.15);">
+                        <i class="fa-solid fa-truck-fast text-warning fs-2 me-3"></i>
+                        <div>
+                            <h5 class="mb-0" style="color: var(--text-main);">Hızlı Teslimat</h5>
+                            <p class="mb-0" style="font-size: 0.88rem;">Sıcak ve taze, 30 dakika içinde kapınızda.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="d-flex align-items-center mt-4" style="z-index: 1;">
-                    <i class="fa-solid fa-leaf text-warning fs-1 me-4"></i>
-                    <div>
-                        <h4 class="text-white mb-1">%100 Doğal</h4>
-                        <p class="text-muted mb-0">Katkı maddesi içermez.</p>
+
+                    <div class="d-flex align-items-center mt-3 p-3 rounded-3"
+                         style="background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.15);">
+                        <i class="fa-solid fa-leaf text-warning fs-2 me-3"></i>
+                        <div>
+                            <h5 class="mb-0" style="color: var(--text-main);">%100 Doğal</h5>
+                            <p class="mb-0" style="font-size: 0.88rem;">Katkı maddesi içermeyen, sağlıklı seçenekler.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mt-3 p-3 rounded-3"
+                         style="background: rgba(245,158,11,0.07); border: 1px solid rgba(245,158,11,0.15);">
+                        <i class="fa-solid fa-award text-warning fs-2 me-3"></i>
+                        <div>
+                            <h5 class="mb-0" style="color: var(--text-main);">Ödüllü Mutfak</h5>
+                            <p class="mb-0" style="font-size: 0.88rem;">2023 İstanbul Gastronomi Ödülü sahibi.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
+        <!-- Biz Neredeyiz -->
         <div class="col-lg-6">
-            <div class="bg-dark p-5 rounded-4 shadow-lg h-100" style="border: 1px solid rgba(255,255,255,0.05);">
-                <h2 class="fw-bold text-warning mb-4 display-5"><i class="fa-solid fa-location-dot me-3"></i>Biz Neredeyiz?</h2>
-                <div class="rounded-4 overflow-hidden mb-4 border border-warning" style="height: 250px; background-color: #333;">
-                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80" alt="Harita" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;" />
+            <div class="info-box h-100">
+                <h2 class="fw-bold mb-4" style="font-size: 2rem; color: var(--text-main);">
+                    <i class="fa-solid fa-location-dot text-warning me-2"></i>Biz Neredeyiz?
+                </h2>
+                <div class="rounded-3 overflow-hidden mb-4"
+                     style="height: 220px; border: 1px solid rgba(245,158,11,0.25);">
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=800&q=80"
+                         alt="Konum Haritası"
+                         style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85;" />
                 </div>
-                <h4 class="text-white mb-2">Hanedan Merkez</h4>
-                <p class="text-light fs-5 mb-1"><i class="fa-solid fa-map-pin text-warning me-2"></i> Atatürk Caddesi, Lezzet Sokak No: 1</p>
-                <p class="text-light fs-5 mb-1"><i class="fa-solid fa-city text-warning me-2"></i> Kadıköy / İstanbul</p>
-                <p class="text-light fs-5"><i class="fa-solid fa-phone text-warning me-2"></i> 0 (216) 123 45 67</p>
+                <h4 class="fw-bold mb-3" style="color: var(--text-main);">Hanedan Merkez</h4>
+                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex align-items-center gap-3 p-2 rounded-2"
+                         style="background: rgba(255,255,255,0.04);">
+                        <i class="fa-solid fa-map-pin text-warning fs-5"></i>
+                        <span style="color: var(--text-light);">Atatürk Caddesi, Lezzet Sokak No: 1</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 p-2 rounded-2"
+                         style="background: rgba(255,255,255,0.04);">
+                        <i class="fa-solid fa-city text-warning fs-5"></i>
+                        <span style="color: var(--text-light);">Kadıköy / İstanbul</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 p-2 rounded-2"
+                         style="background: rgba(255,255,255,0.04);">
+                        <i class="fa-solid fa-phone text-warning fs-5"></i>
+                        <span style="color: var(--text-light);">0 (216) 123 45 67</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-3 p-2 rounded-2"
+                         style="background: rgba(255,255,255,0.04);">
+                        <i class="fa-solid fa-clock text-warning fs-5"></i>
+                        <span style="color: var(--text-light);">Her gün 10:00 – 23:00</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- =============================================
+     CTA BÖLÜMÜ
+     ============================================= -->
+<div class="py-5 mb-5">
+    <div class="container">
+        <div class="text-center px-4 py-5 rounded-4 position-relative overflow-hidden"
+             style="background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(245,158,11,0.12) 100%);
+                    border: 1px solid rgba(245,158,11,0.2);">
+            <div style="position:absolute; top:-60px; right:-60px; width:250px; height:250px; border-radius:50%;
+                        background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%);
+                        pointer-events:none;"></div>
+            <i class="fa-solid fa-calendar-star text-warning mb-3" style="font-size: 2.5rem;"></i>
+            <h2 class="fw-bold mb-3" style="font-size: 2rem; color: var(--text-main);">Masanızı Ayırtın</h2>
+            <p class="mb-4 mx-auto" style="color: var(--text-light); max-width: 480px; font-size: 1.05rem;">
+                Özel günlerinizi unutulmaz kılın. Rezervasyonunuzu hemen oluşturun, biz gerisini halledelim.
+            </p>
+            <a href="/Reservation/Create"
+               class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg hover-scale"
+               style="font-size: 1rem; letter-spacing: 0.05em;">
+                <i class="fa-solid fa-calendar-check me-2"></i>Rezervasyon Yap
+            </a>
+        </div>
+    </div>
+</div>
+
 <style>
-    .hover-scale { transition: transform 0.3s ease; }
-    .hover-scale:hover { transform: scale(1.05); }
+    @@keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(10px); }
+    }
 </style>

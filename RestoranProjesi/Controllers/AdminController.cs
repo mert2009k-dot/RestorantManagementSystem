@@ -260,6 +260,43 @@ namespace RestoranProjesi.Controllers
             }
             return RedirectToAction(nameof(Orders));
         }
+        // --- USER MANAGEMENT ---
+        public async Task<IActionResult> AllUsers(bool showDeleted = false)
+        {
+            var users = await _context.Users
+                .Where(u => u.IsDeleted == showDeleted)
+                .ToListAsync();
+            ViewBag.ShowDeleted = showDeleted;
+            return View(users);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteUser(string id, [FromServices] Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            // Admin hesabı silinemesin
+            if (user != null && user.Email != "admin@restoran.com" && User.Identity?.Name != user.Email)
+            {
+                user.IsDeleted = true;
+                user.IsRestored = false;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(AllUsers));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RestoreUser(string id, [FromServices] Microsoft.AspNetCore.Identity.UserManager<AppUser> userManager)
+        {
+            var user = await userManager.FindByIdAsync(id);
+            if (user != null && user.IsDeleted)
+            {
+                user.IsDeleted = false;
+                user.IsRestored = true;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(AllUsers), new { showDeleted = true });
+        }
+
         // --- EMPLOYEE MANAGEMENT ---
         public async Task<IActionResult> Employees()
         {
@@ -510,6 +547,19 @@ namespace RestoranProjesi.Controllers
             if (order == null) return NotFound();
 
             return View(order);
+        }
+        public async Task<IActionResult> AllTimeStats()
+        {
+            var orders = await _context.Orders.ToListAsync();
+            var stats = new
+            {
+                TotalOrders = orders.Count,
+                CompletedOrders = orders.Count(o => o.Status == "Tamamlandı"),
+                CancelledOrders = orders.Count(o => o.Status == "İptal Edildi"),
+                PendingOrders = orders.Count(o => o.Status == "Bekliyor"),
+                TotalEarnings = orders.Where(o => o.Status == "Tamamlandı").Sum(o => o.TotalAmount)
+            };
+            return View(stats);
         }
     }
 }

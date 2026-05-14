@@ -9,9 +9,15 @@
 
 <div class="row mt-4">
     <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="text-warning"><i class="fa-solid fa-list-check me-2"></i>Sipariş Yönetimi</h2>
-            <a asp-action="Index" class="btn btn-outline-light rounded-pill"><i class="fa-solid fa-arrow-left me-2"></i>Admin Paneline Dön</a>
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+            <h2 class="text-warning mb-0"><i class="fa-solid fa-list-check me-2"></i>Sipariş Yönetimi</h2>
+            <div class="d-flex align-items-center gap-3">
+                <div class="input-group input-group-sm" style="width: 280px;">
+                    <span class="input-group-text bg-dark border-warning text-warning"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id="orderSearchInput" class="form-control bg-dark text-white border-warning" placeholder="#(Numara) ile ara..." onkeyup="filterOrders()">
+                </div>
+                <a asp-action="Index" class="btn btn-outline-light btn-sm rounded-pill px-3 shadow-sm"><i class="fa-solid fa-arrow-left me-2"></i>Admin Paneline Dön</a>
+            </div>
         </div>
 
         <ul class="nav nav-pills mb-3 border-bottom border-warning pb-3" id="pills-tab" role="tablist">
@@ -374,3 +380,40 @@
 
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function filterOrders() {
+            var input = document.getElementById('orderSearchInput').value.toLowerCase();
+            // If they type 123, change to #123. If they type #123, keep it #123
+            var searchStr = input;
+            if (searchStr !== '' && !searchStr.startsWith('#')) {
+                searchStr = '#' + searchStr;
+            }
+            
+            var tables = document.querySelectorAll('.tab-content table');
+            tables.forEach(table => {
+                var trs = table.querySelectorAll('tbody tr');
+                for (var i = 0; i < trs.length; i++) {
+                    if (trs[i].classList.contains('collapse') || trs[i].classList.contains('text-center')) continue;
+                    
+                    var td = trs[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        var textValue = td.textContent || td.innerText;
+                        // For detail row associated with this order row
+                        var detailRow = trs[i].nextElementSibling;
+                        if (textValue.toLowerCase().indexOf(searchStr) > -1 || searchStr === '') {
+                            trs[i].style.display = "";
+                        } else {
+                            trs[i].style.display = "none";
+                            // Also hide the detail row if it was open
+                            if (detailRow && detailRow.classList.contains('collapse')) {
+                                detailRow.classList.remove('show');
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}

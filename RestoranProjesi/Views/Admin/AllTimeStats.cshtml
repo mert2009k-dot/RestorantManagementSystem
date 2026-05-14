@@ -1,0 +1,62 @@
+@model dynamic
+@{
+    ViewData["Title"] = "Tüm Zamanların İstatistikleri";
+}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h2 class="text-white fw-bold m-0"><i class="fa-solid fa-chart-line text-info me-3"></i>Tüm Zamanların İstatistikleri</h2>
+        <a asp-action="DailyLog" class="btn btn-outline-light rounded-pill px-4"><i class="fa-solid fa-arrow-left me-2"></i>Geri Dön</a>
+    </div>
+
+    <div class="row g-4">
+        <!-- Earnings -->
+        <div class="col-md-12">
+            <div class="card bg-dark border-info border-opacity-50 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-body p-5 text-center">
+                    <i class="fa-solid fa-turkish-lira-sign text-info mb-4" style="font-size: 4rem;"></i>
+                    <h5 class="text-light opacity-50 text-uppercase fw-bold mb-2">Toplam Kazanç</h5>
+                    <h1 class="display-3 text-info fw-bold mb-0">₺@Model.TotalEarnings.ToString("N2")</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders -->
+        <div class="col-md-4">
+            <div class="card bg-dark border-light border-opacity-10 shadow h-100 rounded-4">
+                <div class="card-body p-4 text-center">
+                    <div class="text-white fs-1 fw-bold mb-2">@Model.TotalOrders</div>
+                    <div class="text-light opacity-50 small text-uppercase fw-bold">Toplam İşlem</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Completed -->
+        <div class="col-md-4">
+            <div class="card bg-dark border-success border-opacity-25 shadow h-100 rounded-4">
+                <div class="card-body p-4 text-center">
+                    <div class="text-success fs-1 fw-bold mb-2">@Model.CompletedOrders</div>
+                    <div class="text-light opacity-50 small text-uppercase fw-bold">Tamamlanan</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cancelled -->
+        <div class="col-md-4">
+            <div class="card bg-dark border-danger border-opacity-25 shadow h-100 rounded-4">
+                <div class="card-body p-4 text-center">
+                    <div class="text-danger fs-1 fw-bold mb-2">@Model.CancelledOrders</div>
+                    <div class="text-light opacity-50 small text-uppercase fw-bold">İptal Edilen</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card bg-dark border-secondary border-opacity-10 shadow-lg rounded-4 mt-5 p-5 text-center">
+        <p class="text-light opacity-75 fs-5 mb-0">
+            Sistem kurulumundan bugüne kadar toplam <strong>@Model.TotalOrders</strong> sipariş işlemi gerçekleşmiştir. 
+            Bu işlemlerin <strong>@Model.CompletedOrders</strong> tanesi başarıyla tamamlanmış olup, işletmeye toplam 
+            <span class="text-info fw-bold">₺@Model.TotalEarnings.ToString("N2")</span> ciro sağlanmıştır.
+        </p>
+    </div>
+</div>

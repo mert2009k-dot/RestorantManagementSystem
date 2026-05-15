@@ -33,12 +33,7 @@ Modern, hızlı ve güvenli bir restoran yönetim paneli. Bu proje, bir restoran
 ### Canlı Ortam (Cloud)
 Bu proje Dockerize edilmiştir ve Render üzerinde çalışacak şekilde yapılandırılmıştır. Canlıya almak için `Dockerfile` üzerinden build edilmesi yeterlidir.
 
-## 📂 Proje Yapısı
-*   **Controllers:** İş mantığının yönetildiği kontrolcüler.
-*   **Models:** Veritabanı tabloları ve veri yapıları.
-*   **Views:** Kullanıcı arayüzü (Admin & User sayfaları).
-*   **Services:** İş süreçlerini destekleyen servis katmanı.
 
 ---
 👤 **Geliştirici:** [Mert]
-📧 **İletişim:** admin@restoran.com
+📧 **İletişim:** 

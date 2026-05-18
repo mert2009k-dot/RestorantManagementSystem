@@ -2,8 +2,6 @@
 
 ![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core%209.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
 
 Modern, hızlı ve güvenli bir restoran yönetim paneli. Bu proje, bir restoranın tüm dijital operasyonlarını (siparişler, kullanıcı yönetimi, istatistikler) yönetmek için geliştirilmiştir.
 
@@ -35,12 +33,7 @@ Modern, hızlı ve güvenli bir restoran yönetim paneli. Bu proje, bir restoran
 ### Canlı Ortam (Cloud)
 Bu proje Dockerize edilmiştir ve Render üzerinde çalışacak şekilde yapılandırılmıştır. Canlıya almak için `Dockerfile` üzerinden build edilmesi yeterlidir.
 
-## 📂 Proje Yapısı
-*   **Controllers:** İş mantığının yönetildiği kontrolcüler.
-*   **Models:** Veritabanı tabloları ve veri yapıları.
-*   **Views:** Kullanıcı arayüzü (Admin & User sayfaları).
-*   **Services:** İş süreçlerini destekleyen servis katmanı.
 
 ---
 👤 **Geliştirici:** [Mert]
-📧 **İletişim:** admin@restoran.com
+📧 **İletişim:** 
